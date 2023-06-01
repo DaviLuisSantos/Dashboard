@@ -6,12 +6,13 @@ include '../z/config.php';
 
 
 ?>
+
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
   <meta charset="utf-8">
@@ -20,33 +21,93 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    href="./dist/css/fonts.googleapis.com_css_family.css">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  
+  <script src="plugins/jquery/jquery.min.js"></script>
+  
+  <!-- Importar Bootstrap CSS -->
+  <link rel="stylesheet" href="./dist/css/bootstrap.min.css">
+  
+  <!-- Seu estilo personalizado -->
+  <style>
+    body.dark {
+      background-color: #161626;
+      color: #ffffff;
+    }
+    
+    .theme-switch-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+    }
+    
+    .theme-switch-toggle {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+    
+    .theme-switch-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .theme-switch-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+    
+    .theme-switch-slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: #fff;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+    
+    input:checked + .theme-switch-slider {
+      background-color: #2196F3;
+    }
+    
+    input:focus + .theme-switch-slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+    
+    input:checked + .theme-switch-slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+  </style>
 </head>
-
-<body class="hold-transition sidebar-mini">
+<body>
   <div class="wrapper">
+    <div class="theme-switch-container">
+    <label class="theme-switch-toggle">
+      <input type="checkbox" id="themeSwitch">
+      <span class="theme-switch-slider"></span>
+    </label>
+  </div>
       <div class="card-body table-responsive pad">
-        <p class="mt-3 mb-1">Intervalo de Tempo</p>
+        <h1 class="mt-3 mb-1">Dashboard Segmix</h1>
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn bg-olive active">
-            <input type="radio" name="options" id="option_b1" autocomplete="off" value="1" checked> 1 dia
-          </label>
-          <label class="btn bg-olive">
-            <input type="radio" name="options" id="option_b2" autocomplete="off" value="7"> 7 dias
-          </label>
-          <label class="btn bg-olive">
-            <input type="radio" name="options" id="option_b3" autocomplete="off" value="30"> 30 dias
-          </label>
-          <label class="btn bg-olive">
-            <input type="radio" name="options" id="option_b4" autocomplete="off" value="60"> 60 dias
-          </label>
-          <label class="btn bg-olive">
-            <input type="radio" name="options" id="option_b5" autocomplete="off" value="90"> 90 dias
-          </label>
         </div>
       </div>
 
@@ -69,6 +130,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- AdminLTE App -->
   <script src="dist/js/adminlte.min.js"></script>
 
+   
   <script>
     // Função que atualiza os resultados com os dados obtidos do servidor
     function atualizarResultados(dias) {
@@ -138,160 +200,42 @@ scratch. This page gets rid of all links and provides the needed markup only.
   });
 });
 
-
-
-
-    $(function () {
-      /* ChartJS
-       * -------
-       * Here we will create a few charts using ChartJS
-       */
-
-      /*
-     //--------------
-     //- AREA CHART -
-     //--------------
-
-     // Get context with jQuery - using jQuery's .get() method.
-     var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
-
-     var areaChartData = {
-       labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-       datasets: [
-         {
-           label               : 'Digital Goods',
-           backgroundColor     : 'rgba(60,141,188,0.9)',
-           borderColor         : 'rgba(60,141,188,0.8)',
-           pointRadius          : false,
-           pointColor          : '#3b8bba',
-           pointStrokeColor    : 'rgba(60,141,188,1)',
-           pointHighlightFill  : '#fff',
-           pointHighlightStroke: 'rgba(60,141,188,1)',
-           data                : [28, 48, 40, 19, 86, 27, 90]
-         },
-         {
-           label               : 'Electronics',
-           backgroundColor     : 'rgba(210, 214, 222, 1)',
-           borderColor         : 'rgba(210, 214, 222, 1)',
-           pointRadius         : false,
-           pointColor          : 'rgba(210, 214, 222, 1)',
-           pointStrokeColor    : '#c1c7d1',
-           pointHighlightFill  : '#fff',
-           pointHighlightStroke: 'rgba(220,220,220,1)',
-           data                : [65, 59, 80, 81, 56, 55, 40]
-         },
-       ]
-     }
-
-     var areaChartOptions = {
-       maintainAspectRatio : false,
-       responsive : true,
-       legend: {
-         display: false
-       },
-       scales: {
-         xAxes: [{
-           gridLines : {
-             display : false,
-           }
-         }],
-         yAxes: [{
-           gridLines : {
-             display : false,
-           }
-         }]
-       }
-     }
-
-     // This will get the first returned node in the jQuery collection.
-     new Chart(areaChartCanvas, {
-       type: 'line',
-       data: areaChartData,
-       options: areaChartOptions
-     })
-
-     //-------------
-     //- LINE CHART -
-     //--------------
-     var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
-     var lineChartOptions = $.extend(true, {}, areaChartOptions)
-     var lineChartData = $.extend(true, {}, areaChartData)
-     lineChartData.datasets[0].fill = false;
-     lineChartData.datasets[1].fill = false;
-     lineChartOptions.datasetFill = false
-
-     var lineChart = new Chart(lineChartCanvas, {
-       type: 'line',
-       data: lineChartData,
-       options: lineChartOptions
-     })
-     */
-
-      //-------------
-      //- DONUT CHART -
-      //-------------
-      // Get context with jQuery - using jQuery's .get() method.
-      var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
-      var donutData = <?php echo json_encode($donutData); ?>;
-      var donutOptions = {
-        maintainAspectRatio: false,
-        responsive: true,
+document.addEventListener("DOMContentLoaded", function() {
+      // Carregar o tema salvo no armazenamento local (se existir)
+      var savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.body.classList.add(savedTheme);
+        document.getElementById('themeSwitch').checked = (savedTheme === 'dark');
       }
-      //Create pie or douhnut chart
-      // You can switch between pie and douhnut using the method below.
-      new Chart(donutChartCanvas, {
-        type: 'pie',
-        data: donutData,
-        options: donutOptions
-      })
-      /*
-          //-------------
-          //- PIE CHART -
-          //-------------
-          // Get context with jQuery - using jQuery's .get() method.
-          var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-          var pieData        = donutData;
-          var pieOptions     = {
-            maintainAspectRatio : false,
-            responsive : true,
-          }
-          //Create pie or douhnut chart
-          // You can switch between pie and douhnut using the method below.
-          new Chart(pieChartCanvas, {
-            type: 'pie',
-            data: pieData,
-            options: pieOptions
-          })
-
-          */
-
-      /*
-          //---------------------
-          //- STACKED BAR CHART -
-          //---------------------
-          var stackedBarChartCanvas = $('#stackedBarChart').get(0).getContext('2d')
-          var stackedBarChartData = $.extend(true, {}, barChartData)
-
-          var stackedBarChartOptions = {
-            responsive              : true,
-            maintainAspectRatio     : false,
-            scales: {
-              xAxes: [{
-                stacked: true,
-              }],
-              yAxes: [{
-                stacked: true
-              }]
-            }
-          }
-
-          new Chart(stackedBarChartCanvas, {
-            type: 'bar',
-            data: stackedBarChartData,
-            options: stackedBarChartOptions
-          })
-          */
-    })
+      
+      // Lidar com a mudança de tema
+      document.getElementById('themeSwitch').addEventListener('change', function() {
+        if (this.checked) {
+          document.body.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          document.body.classList.remove('dark');
+          localStorage.setItem('theme', 'light');
+        }
+      });
+    });
+      // Carregar o tema salvo no armazenamento local (se existir)
+      var savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.body.classList.add(savedTheme);
+        document.getElementById('themeSwitch').checked = (savedTheme === 'dark');
+      }
+      
+      // Lidar com a mudança de tema
+      document.getElementById('themeSwitch').addEventListener('change', function() {
+        if (this.checked) {
+          document.body.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          document.body.classList.remove('dark');
+          localStorage.setItem('theme', 'light');
+        }
+      });
   </script>
 </body>
 

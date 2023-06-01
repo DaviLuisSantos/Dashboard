@@ -116,47 +116,39 @@ class Chart
   }
 
   public function render()
-  {
-    $contrastColor = getContrastColor($this->cor);
-    $tempoRefresh =  strtotime('+' . 2 . ' minutes');
-    $currentTimestamp = time(); // Obtém o timestamp do tempo atual1201
-    $ttempoRefresh = strtotime($tempoRefresh)+120;
+{
+  $contrastColor = getContrastColor($this->cor);
+  $tempoRefresh = time() + (0.5 * 60); // Adiciona 2 minutos ao tempo atual
+  $currentTimestamp = time();
+  $ttempoRefresh = strtotime($tempoRefresh);
 
-    $html = '
-
-    <div class="card">
-      <div class="card-header" style="background-color:#' . $this->cor . '">
-        <h3 class="card-title text-' . $contrastColor . '">' . $this->descricao . '</h3>
-      </div>
-      <div class="card-body">
-      <canvas id="' . $this->nome . 'Chart" style="min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;" dataTempoRefresh="' . $tempoRefresh . '"></canvas>
-
-      </div>
+  $html = '
+  <div class="card">
+    <div class="card-header" style="background-color:#' . $this->cor . '">
+      <h3 class="card-title text-' . $contrastColor . '">' . $this->descricao . '</h3>
     </div>
+    <div class="card-body">
+      <canvas class="chart" id="' . $this->nome . 'Chart" style="min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;" data-tempo-refresh="' . $tempoRefresh . '"></canvas>
+    </div>
+  </div>
 
-  <script src="plugins/jquery/jquery.min.js"></script>
-  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="plugins/chart.js/Chart.min.js"></script>
-  <script src="dist/js/adminlte.min.js"></script>
   <script>
     var ctx = document.getElementById("' . $this->nome . 'Chart").getContext("2d");
     var ' . $this->nome . 'Chart = new Chart(ctx, ' . json_encode($this->config) . ');
 
     setInterval(function () {
-      var tempoRefresh= document.getElementById("' . $this->nome . 'Chart").getAttribute("dataTempoRefresh");
-      var currentTime = new Date().getTime();
+      var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").getAttribute("data-tempo-refresh"));
+      var currentTime = Math.floor(Date.now() / 1000); // Obtém o tempo atual em segundos
+
       if (currentTime >= tempoRefresh) {
-        document.getElementById("' . $this->nome . 'Chart").setAttribute("dataTempoRefresh",new Date().getTime()+2*60*1000);
         atualizarChart("' . $this->nome . '");
       }
-    }, 10000); // Intervalo definido como 120.000 milissegundos (2 minutos)
-
-
-
-
+    }, 20000);
   </script>';
-    return $html;
-  }
+
+  return $html;
+}
+
 }
 
 class Box

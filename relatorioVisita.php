@@ -4,8 +4,7 @@ require_once 'ComponentesVisualizacao.php';
 require_once 'querys-dash.php';
 
 
-$dias = 1;
-$dias = $_POST["dias"];
+$dias = 10;
 $filename = __DIR__ . "./resultados/resultados_" . date('Y-m-d') . "_" . $dias . "dias.html";
 $compHtml=__DIR__ . "./resultados/resultados_" . date('Y-n-d') . "_";
 
@@ -20,6 +19,11 @@ if (file_exists($filename)) {
   // Se o arquivo não existir, gerar o HTML e salvá-lo em um arquivo
   ob_start(); // Iniciar o buffer de saída
   ?>
+    <script src="plugins/jquery/jquery.min.js"></script>
+  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="plugins/chart.js/Chart.min.js"></script>
+  <script src="dist/js/adminlte.min.js"></script>
+
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
@@ -118,72 +122,23 @@ function getCurrentDate() {
 
   return year + '-' + month + '-' + day;
 }
-
-
-    $(function () {
-
-
-      document.getElementById("gerarRelatorioBtn").addEventListener("click", function () {
-        // Obtém o valor da variável com a chave do relatório
-        var chaveRelatorio = "<?php echo $dias ?>";
-        // Redireciona o usuário para a página de destino com a chave como parâmetro de consulta na URL
-        window.open("relatorioCompleto.php?chave=" + chaveRelatorio, "_blank");
-      });
-
-      //-------------
-      //- DONUT CHART -
-      //-------------
-      // Get context with jQuery - using jQuery's .get() method.
-      var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
-      var donutData = <?php echo json_encode($donutData); ?>;
-      var donutOptions = {
-        maintainAspectRatio: true,
-        responsive: true,
-
-      };
-      //Create pie or douhnut chart
-      // You can switch between pie and douhnut using the method below.
-      new Chart(donutChartCanvas, {
-        type: 'pie',
-        data: donutData,
-        options: donutOptions
-      })
-      //-------------
-      //- BAR CHART -
-      //-------------
-      var barChartCanvas = $('#barChart').get(0).getContext('2d')
-
-      var barChartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        datasetFill: false
-      }
-
-      new Chart(barChartCanvas, {
-        type: 'bar',
-        data: <?php echo json_encode($chartData) ?>,
-        options: <?php echo json_encode($chartOptions) ?>
-      })
-      //-------------
-      //- LINE CHART -
-      //--------------
-      var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
-
-      var lineChart = new Chart(lineChartCanvas, {
-        type: 'line',
-        data: <?php echo json_encode($lineChartData) ?>,
-        options: <?php echo json_encode($lineChartOptions) ?>
-      })
-
-      var facialLineChartCanvas = $('#facialLineChart').get(0).getContext('2d');
-
-      var facialLineChart = new Chart(facialLineChartCanvas, {
-        type: 'line',
-        data: <?php echo json_encode($facialLineChartData) ?>,
-        options: <?php echo json_encode($facialLineChartOptions) ?>
-      });
-    });
   </script>
+    <style>
+  .chart-canvas {
+    min-height: 200px;
+    height: 200px;
+    max-height: 200px;
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .chart-canvas {
+      min-height: 350px;
+      height: 350px;
+      max-height: 350px;
+    }
+  }
+</style>
   <?php
   $html = ob_get_clean(); // Obter o conteúdo do buffer de saída e limpar o buffer
   file_put_contents($filename, $html); // Salvar o HTML em um arquivo

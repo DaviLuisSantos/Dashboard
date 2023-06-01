@@ -6,63 +6,59 @@ require_once 'querys-dash.php';
 
 $dias = 10;
 $filename = __DIR__ . "./resultados/resultados_" . date('Y-m-d') . "_" . $dias . "dias.html";
-$compHtml=__DIR__ . "./resultados/resultados_" . date('Y-n-d') . "_";
+$compHtml=__DIR__ . "./resultados/resultados_" . date('Y-n-j') . "_";
 
 
 
 $querysComponentes = mudarDias($dias, $resultados);
-if (file_exists($filename)) {
-  // Se o arquivo existir, basta lê-lo e mostrá-lo ao usuário
-  $html = file_get_contents($filename);
-  echo $html;
-} else {
-  // Se o arquivo não existir, gerar o HTML e salvá-lo em um arquivo
-  ob_start(); // Iniciar o buffer de saída
-  ?>
-    <script src="plugins/jquery/jquery.min.js"></script>
-  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="plugins/chart.js/Chart.min.js"></script>
-  <script src="dist/js/adminlte.min.js"></script>
-
+?>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <div class="container-fluid">
-    <div class="row">
+    <div class="row" id="dashboard">
       <?php
       foreach ($querysComponentes as $index) {
+        
         if ($index->tipo == 'BOX') {
+          if (file_exists($compHtml.$index->nome.'.html')){
+            $html = file_get_contents($compHtml.$index->nome.'.html');
+            echo '<div class="col-lg-4 col-6" id="Chart-' . $index->nome . '">' . $html . '</div>';
+          }
+          else if(!(file_exists($compHtml.$index->nome.'.html'))){
           $stmt = $dbConn->prepare($index->query);
           $stmt->execute();
           $resultado = $stmt->fetch(PDO::FETCH_OBJ);
-          $box = new Box($index->cor, $resultado->TOTAL, $index->descricao);
+          $box = new Box($index->cor, $resultado->TOTAL, $index->descricao,$index->nome,$index->tempo_refresh);
           $boxHtml = $box->render();
-          echo $boxHtml;
-        } else {
-          if (file_exists($compHtml.$index->nome.'.html')){
-            $html = file_get_contents($compHtml.$index->nome.'.html');
-            echo $html;
+          echo '<div class="col-lg-4 col-6" id="Chart-' . $index->nome . '">' . $boxHtml . '</div>';
+          }
           }
           else{
-          $stmt = $dbConn->prepare($index->query);
-          $stmt->execute();
-          $resultado = $stmt->fetchAll(PDO::FETCH_OBJ);
-          $labels = array();
-          $data = array();
-
-          foreach ($resultado as $registro) {
-            array_push($labels, $registro->LABELS . " - " . $registro->DATA);
-            array_push($data, $registro->DATA);
+            if (file_exists($compHtml.$index->nome.'.html')){
+              $html = file_get_contents($compHtml.$index->nome.'.html');
+              echo '<div class="col-lg-6" id="Chart-' . $index->nome . '">' . $html . '</div>';
+            }
+            else if(!(file_exists($compHtml.$index->nome.'.html'))){
+              $stmt = $dbConn->prepare($index->query);
+              $stmt->execute();
+              $resultado = $stmt->fetchAll(PDO::FETCH_OBJ);
+              $labels = array();
+              $data = array();
+    
+              foreach ($resultado as $registro) {
+                array_push($labels, $registro->LABELS . " - " . $registro->DATA);
+                array_push($data, $registro->DATA);
+              }
+              $chart = new Chart($index->nome, $index->descricao, $index->tipo, $labels, $data, $index->cor, $index->tempo_refresh);
+              $chartHtml = $chart->render();
+              echo '<div class="col-lg-6" id="Chart-' . $index->nome . '">' . $chartHtml . '</div>';
+              }
           }
-          $chart = new Chart($index->nome, $index->descricao, $index->tipo, $labels, $data, $index->cor, $index->tempo_refresh);
-          $chartHtml = $chart->render();
-          echo '<div class="col-lg-6" id="Chart-' . $index->nome . '">' . $chartHtml . '</div>';
-          }
+          
         }
-      }
-
       ?>
     </div>
 
@@ -143,5 +139,5 @@ function getCurrentDate() {
   $html = ob_get_clean(); // Obter o conteúdo do buffer de saída e limpar o buffer
   file_put_contents($filename, $html); // Salvar o HTML em um arquivo
   echo $html; // Exibir o HTML para o usuário
-}
+
 ?>

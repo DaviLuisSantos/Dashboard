@@ -118,7 +118,7 @@ class Chart
   public function render()
 {
   $contrastColor = getContrastColor($this->cor);
-  $tempoRefresh = time() + (0.5 * 60); // Adiciona 2 minutos ao tempo atual
+  $tempoRefresh = time() + ($this->tempoRefresh * 60); // Adiciona 2 minutos ao tempo atual
   $currentTimestamp = time();
   $ttempoRefresh = strtotime($tempoRefresh);
 
@@ -137,13 +137,16 @@ class Chart
     var ' . $this->nome . 'Chart = new Chart(ctx, ' . json_encode($this->config) . ');
 
     setInterval(function () {
+      setTimeout(function(){
       var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").getAttribute("data-tempo-refresh"));
       var currentTime = Math.floor(Date.now() / 1000); // Obtém o tempo atual em segundos
 
       if (currentTime >= tempoRefresh) {
+        var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").setAttribute("data-tempo-refresh", Math.floor(Date.now() / 1000)+120000));
         atualizarChart("' . $this->nome . '");
       }
-    }, 20000);
+    },1000);
+    }, 1000);
   </script>';
 
   return $html;
@@ -156,34 +159,46 @@ class Box
   private $bgColor;
   private $valor;
   private $titulo;
+  private $nome;
+  private $tempoRefresh;
 
-  public function __construct($bgColor, $valor, $titulo)
+  public function __construct($bgColor, $valor, $titulo,$nome,$tempoRefresh=0)
   {
     $this->bgColor = $bgColor;
     $this->valor = $valor;
     $this->titulo = $titulo;
+    $this->nome=$nome;
+    $this->tempoRefresh=$tempoRefresh;
 
   }
 
   public function render()
   {
     $contrastColor = getContrastColor($this->bgColor);
-    return '
-    <div class="col-lg-4 col-6">
+    $tempoRefresh = time() + ($this->tempoRefresh * 60); // Adiciona 2 minutos ao tempo atual
+  $currentTimestamp = time();
+  $ttempoRefresh = strtotime($tempoRefresh);
+
+    $html= '
     <div class="small-box" style="background-color: #' . $this->bgColor . '">
       <div class="inner">
-        <h3 class="text-' . $contrastColor . '">' . $this->valor . '</h3>
+        <h3 class="text-' . $contrastColor . '" id="' . $this->nome . 'Chart" data-tempo-refresh="' . $tempoRefresh . '" >' . $this->valor . '</h3>
         <p class="text-' . $contrastColor . '">' . $this->titulo . '</p>
       </div>
     </div>
-    </div>
-    <script src="plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.min.js"></script>';
+    <script>
+    setInterval(function () {
+      var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").getAttribute("data-tempo-refresh"));
+      var currentTime = Math.floor(Date.now() / 1000); // Obtém o tempo atual em segundos
+
+      if (currentTime >= tempoRefresh) {
+        var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").setAttribute("data-tempo-refresh", Math.floor(Date.now() / 1000)+120000));
+        atualizarChart("' . $this->nome . '");
+      }
+    }, 1000);
+  </script>';
+
+    return $html;
   }
 }
 

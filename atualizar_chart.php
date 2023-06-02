@@ -3,9 +3,9 @@ include '../z/config.php';
 require_once 'ComponentesVisualizacao.php';
 require_once 'querys-dash.php';
 
-$querysComponentes = mudarDias(200, $resultados);
+$querysComponentes = mudarDias(365, $resultados);
 
-$compHtml=__DIR__ . "./resultados/resultados_" . date('Y-n-j') . "_";
+$compHtml = __DIR__ . "./resultados/resultados_" . date('Y-n-j') . "_";
 
 // Receber o ID do componente e as configurações atuais do gráfico
 $componenteId = $_POST['id'];
@@ -16,14 +16,13 @@ foreach ($querysComponentes as $unico) {
     break;
   }
 }
-if($chartClass->tipo == 'BOX') {
+if ($chartClass->tipo == 'BOX') {
   $stmt = $dbConn->prepare($chartClass->query);
   $stmt->execute();
   $resultado = $stmt->fetch(PDO::FETCH_OBJ);
-  $boxAtu = new Box($chartClass->cor, $resultado->TOTAL, $chartClass->descricao,$chartClass->nome, $chartClass->tempo_refresh);
+  $boxAtu = new Box($chartClass->cor, $resultado->TOTAL, $chartClass->descricao, $chartClass->nome, $chartClass->tempo_refresh);
   $htmlAtu = $boxAtu->render();
-}
- else {
+} else {
   $stmt = $dbConn->prepare($chartClass->query);
   $stmt->execute();
   $resultado = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -31,7 +30,7 @@ if($chartClass->tipo == 'BOX') {
   $data = array();
 
   foreach ($resultado as $registro) {
-    array_push($labels, $registro->LABELS . " - " . $registro->DATA);
+    array_push($labels, $registro->LABELS);
     array_push($data, $registro->DATA);
   }
   $chartAtu = new Chart($chartClass->nome, $chartClass->descricao, $chartClass->tipo, $labels, $data, $chartClass->cor, $chartClass->tempo_refresh);

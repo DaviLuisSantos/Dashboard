@@ -49,7 +49,7 @@ $querysComponentes = mudarDias($dias, $resultados);
               $data = array();
     
               foreach ($resultado as $registro) {
-                array_push($labels, $registro->LABELS . " - " . $registro->DATA);
+                array_push($labels, $registro->LABELS);
                 array_push($data, $registro->DATA);
               }
               $chart = new Chart($index->nome, $index->descricao, $index->tipo, $labels, $data, $index->cor, $index->tempo_refresh);
@@ -64,8 +64,8 @@ $querysComponentes = mudarDias($dias, $resultados);
 
     <!-- /.card-body -->
   </div>
-  <button type="button" class="btn btn-block bg-gradient-success btn-lg" id="gerarRelatorioBtn">Relatorio
-    Completo</button>
+  <!--<button type="button" class="btn btn-block bg-gradient-success btn-lg" id="gerarRelatorioBtn">Relatorio
+    Completo</button>-->
 
 
   <!-- jQuery -->

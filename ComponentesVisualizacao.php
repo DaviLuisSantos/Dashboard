@@ -74,10 +74,52 @@ class Chart
         );
         break;
       case 'pie':
-        $cores = array();
-        for ($i = 0; $i < count($this->data); $i++) {
-          $cores[] = $this->gerar_cor_aleatoria();
+
+        for ($i = 0; $i < count($this->labels); $i++) {
+          $this->labels[$i] .= ' - ' . $this->data[$i];
         }
+        $cores = array(
+          '#C4FFB6',
+          // menta retrô
+          '#FFD9A5',
+          // pêssego retrô
+          '#FFE2FF',
+          // lavanda retrô
+          '#A0A0A0',
+          // cinza escuro retrô
+          '#FF80C0',
+          // rosa choque retrô
+          '#80FFD4',
+          // azul-piscina retrô
+          '#B9FF80',
+          // verde limão retrô
+          '#FFA384',
+          // coral retrô
+          '#CBF3FF',
+          // azul pastel retrô
+          '#D8FFCB',
+          // verde pastel retrô
+          '#FFCBF3',
+          // rosa pastel retrô
+          '#6B9BFF',
+          // azul retrô
+          '#FF6BCB',
+          // rosa retrô
+          '#CB6BFF',
+          // violeta retrô
+          '#D7D7D7',
+          // cinza retrô
+          '#6BFFCB',
+          // azul-turquesa retrô
+          '#B4FF6B',
+          // verde retrô
+          '#FFEB6B',
+          // amarelo retrô
+          '#FFCB6B',
+          // laranja retrô
+          '#FF6B6B' // vermelho retrô
+        );
+
 
         $config = array(
           'type' => $type,
@@ -116,13 +158,13 @@ class Chart
   }
 
   public function render()
-{
-  $contrastColor = getContrastColor($this->cor);
-  $tempoRefresh = time() + ($this->tempoRefresh * 60); // Adiciona 2 minutos ao tempo atual
-  $currentTimestamp = time();
-  $ttempoRefresh = strtotime($tempoRefresh);
+  {
+    $contrastColor = getContrastColor($this->cor);
+    $tempoRefresh = time() + ($this->tempoRefresh * 60); // Adiciona 2 minutos ao tempo atual
+    $currentTimestamp = time();
+    $ttempoRefresh = strtotime($tempoRefresh);
 
-  $html = '
+    $html = '
   <div class="card">
     <div class="card-header" style="background-color:#' . $this->cor . '">
       <h3 class="card-title text-' . $contrastColor . '">' . $this->descricao . '</h3>
@@ -149,8 +191,8 @@ class Chart
     }, 1000);
   </script>';
 
-  return $html;
-}
+    return $html;
+  }
 
 }
 
@@ -162,13 +204,13 @@ class Box
   private $nome;
   private $tempoRefresh;
 
-  public function __construct($bgColor, $valor, $titulo,$nome,$tempoRefresh=0)
+  public function __construct($bgColor, $valor, $titulo, $nome, $tempoRefresh = 0)
   {
     $this->bgColor = $bgColor;
     $this->valor = $valor;
     $this->titulo = $titulo;
-    $this->nome=$nome;
-    $this->tempoRefresh=$tempoRefresh;
+    $this->nome = $nome;
+    $this->tempoRefresh = $tempoRefresh;
 
   }
 
@@ -176,10 +218,10 @@ class Box
   {
     $contrastColor = getContrastColor($this->bgColor);
     $tempoRefresh = time() + ($this->tempoRefresh * 60); // Adiciona 2 minutos ao tempo atual
-  $currentTimestamp = time();
-  $ttempoRefresh = strtotime($tempoRefresh);
+    $currentTimestamp = time();
+    $ttempoRefresh = strtotime($tempoRefresh);
 
-    $html= '
+    $html = '
     <div class="small-box" style="background-color: #' . $this->bgColor . '">
       <div class="inner">
         <h3 class="text-' . $contrastColor . '" id="' . $this->nome . 'Chart" data-tempo-refresh="' . $tempoRefresh . '" >' . $this->valor . '</h3>

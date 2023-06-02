@@ -106,31 +106,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
         }
       });
     }
-
-
-
-    $(document).ready(function () {
-      // Selecionar o valor padrão do input
-      var dias = $("input[name='options']:checked").val();
-
-      // Chamar a função para carregar o conteúdo do div "conteudo" assim que a página é carregada
+    setInterval(function () {
       atualizarResultados();
+    }, 60000);
 
-      // Adicionar um event listener para escutar quando o usuário seleciona um novo valor para o input
-      $("input[name='options']").change(function () {
-        // Obter o valor selecionado pelo usuário
-        var dias = $(this).val();
 
-        // Chamar a função para atualizar o conteúdo do div "conteudo" com o novo valor selecionado pelo usuário
-        atualizarResultados();
-
-        // Marcar o input selecionado como checked
-        $("input[name='options']").prop("checked", false);
-        $(this).prop("checked", true);
-      });
-    });
 
     $(document).ready(function () {
+      atualizarResultados();
       $('a.nav-link').click(function (e) {
         e.preventDefault();
         var file = $(this).data('file');

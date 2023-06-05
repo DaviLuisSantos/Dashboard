@@ -1,65 +1,178 @@
-body.dark {
-    background-color: #151D3B;
-    color: #ffffff;
-  }
-  
-  .theme-switch-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-  }
-  
-  .theme-switch-toggle {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-  }
-  
-  .theme-switch-toggle input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  .theme-switch-slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
-  .theme-switch-slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: #fff;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
-  input:checked + .theme-switch-slider {
-    background-color: #2196F3;
-  }
-  
-  input:focus + .theme-switch-slider {
-    box-shadow: 0 0 1px #2196F3;
-  }
-  
-  input:checked + .theme-switch-slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-  }
+/* Estilos gerais */
+body {
+  background-color: #f8f9fa;
+  color: #343a40;
+}
 
-  body{
-    background-color:#DADBBD
-  }
+.container {
+  margin-top: 20px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+.card {
+  margin-bottom: 15px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.modal-content {
+  background-color: #fff;
+}
+
+.modal-header {
+  background-color: #f8f9fa;
+}
+
+/* Estilos específicos para o tema escuro */
+body.dark {
+  /* Cores de fundo */
+  --bg-primary: #222222;
+  --bg-secondary: #393939;
+  --bg-card: #333333;
+  --bg-modal: rgba(0, 0, 0, 0.8);
+
+  /* Cores do texto */
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-heading: #ffffff;
+
+  /* Cores dos botões */
+  --btn-primary-bg: #00adb5;
+  --btn-primary-text: #ffffff;
+  --btn-primary-hover: #0097a7;
+  --btn-secondary-bg: #393939;
+  --btn-secondary-text: #ffffff;
+  --btn-secondary-hover: #222222;
+
+  /* Cores do formulário */
+  --form-input-bg: #222222;
+  --form-input-text: #ffffff;
+  --form-input-border: #393939;
+
+  /* Cores do modal */
+  --modal-header-text: #ffffff;
+  --modal-body-bg: #333333;
+}
+
+body.dark {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.container.dark {
+  background-color: var(--bg-secondary);
+}
+
+body.dark .btn-primary {
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-color: var(--btn-primary-bg);
+}
+
+body.dark .btn-primary:hover {
+  background-color: var(--btn-primary-hover);
+  border-color: var(--btn-primary-hover);
+}
+
+body.dark .card {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+body.dark .card-title {
+  color: var(--text-heading);
+}
+
+body.dark .modal-content {
+  background-color: var(--bg-modal);
+}
+
+body.dark .modal-header {
+  background-color: var(--bg-secondary);
+}
+
+body.dark input[type="text"],
+body.dark input[type="number"],
+body.dark textarea {
+  background-color: var(--form-input-bg);
+  color: var(--form-input-text);
+  border-color: var(--form-input-border);
+}
+
+body.dark .modal-header {
+  color: var(--modal-header-text);
+}
+
+body.dark .modal-body {
+  background-color: var(--modal-body-bg);
+}
+
+body.dark .chart-grid-line {
+  stroke: rgb(255, 255, 255); /* define a cor da grade para o tema escuro */
+}
+
+.theme-switch-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
+
+.theme-switch-toggle {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.theme-switch-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+}
+
+.theme-switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #fff;
+  transition: .4s;
+}
+
+input:checked + .theme-switch-slider {
+  background-color: #2196F3;
+}
+
+input:focus + .theme-switch-slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .theme-switch-slider:before {
+  transform: translateX(26px);
+}

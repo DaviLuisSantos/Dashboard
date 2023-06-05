@@ -52,19 +52,21 @@ foreach ($registros as $registro) {
 }
 
 $sql = "SELECT * FROM PF_MOD_DASHBOARD";
-$stmt->execute();
-$registros = $stmt->fetchAll(PDO::FETCH_OBJ);
-$graficos=array();
+$stmt2 = $dbConn->prepare($sql);
+$stmt2->execute();
+$registros = $stmt2->fetchAll(PDO::FETCH_OBJ);
+$graficos = array();
 
 foreach ($registros as $registro) {
   $objt = new stdClass();
   $objt->id = $registro->ID;
   $objt->nome = $registro->NOME;
-  $objt->descricao=$registro->DESCRICAO;
+  $objt->descricao = $registro->DESCRICAO;
   $objt->cor = $registro->TIPO_MOD_DASHBOARD;
 
-  $graficos[$i]=$objt;
+  $graficos[] = $objt;
 }
+
 
 function mudarDias($dias, $resultados){
   foreach ($resultados as $resultado) {

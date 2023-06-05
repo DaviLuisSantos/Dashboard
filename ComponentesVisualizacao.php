@@ -160,7 +160,7 @@ class Chart
   public function render()
   {
     $contrastColor = getContrastColor($this->cor);
-    $tempoRefresh = time() + ($this->tempoRefresh * 60); // Adiciona 2 minutos ao tempo atual
+    $tempoRefresh = time() + ($this->tempoRefresh * 60); 
     $currentTimestamp = time();
     $ttempoRefresh = strtotime($tempoRefresh);
 

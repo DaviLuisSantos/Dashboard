@@ -29,7 +29,7 @@ foreach ($registros as $registro) {
   $obj->tempo_refresh = $registro->TEMPO_REFRESH;
   $obj->id_mod_dashboard = $registro->ID_MOD_DASHBOARD;
   $obj->query = $registro->QUERY;
-  $sql = "SELECT NOME FROM PF_MOD_DASHBOARD WHERE TIPO_MOD_DASHBOARD = $obj->id_mod_dashboard";
+  $sql = "SELECT * FROM PF_MOD_DASHBOARD WHERE TIPO_MOD_DASHBOARD = $obj->id_mod_dashboard";
   $stmt = $dbConn->prepare($sql);
   $stmt->execute();
   $TIPO_mod = $stmt->fetch(PDO::FETCH_OBJ);
@@ -47,9 +47,23 @@ foreach ($registros as $registro) {
           $obj->tipo='line';
           break;
   }
-
-  // Adiciona o objeto ao array de resultados
+  
   $resultados[] = $obj;
+}
+
+$sql = "SELECT * FROM PF_MOD_DASHBOARD";
+$stmt->execute();
+$registros = $stmt->fetchAll(PDO::FETCH_OBJ);
+$graficos=array();
+
+foreach ($registros as $registro) {
+  $objt = new stdClass();
+  $objt->id = $registro->ID;
+  $objt->nome = $registro->NOME;
+  $objt->descricao=$registro->DESCRICAO;
+  $objt->cor = $registro->TIPO_MOD_DASHBOARD;
+
+  $graficos[$i]=$objt;
 }
 
 function mudarDias($dias, $resultados){
@@ -58,6 +72,9 @@ function mudarDias($dias, $resultados){
     $resultado->query = $query;
   };
   return $resultados;
+}
+function getGraf($graficos){
+return $graficos;
 }
 
 function tipoGrafico($dbConn){

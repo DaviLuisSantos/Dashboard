@@ -106,10 +106,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         }
       });
     }
-    setInterval(function () {
+   /* setInterval(function () {
       atualizarResultados();
     }, 60000);
-
+*/
 
 
     $(document).ready(function () {

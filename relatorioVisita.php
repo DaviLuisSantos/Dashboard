@@ -5,7 +5,7 @@ require_once 'querys-dash.php';
 
 $dias = 10;
 $filename = __DIR__ . "./resultados/resultados_" . date('Y-m-d') . "_" . $dias . "dias.html";
-$compHtml = __DIR__ . "./resultados/resultados_" . date('Y-n-j') . "_";
+$compHtml = __DIR__ . "./resultados/resultados_" . date('Y-m-d') . "_";
 
 $querysComponentes = mudarDias($dias, $resultados);
 ?>
@@ -60,6 +60,7 @@ $querysComponentes = mudarDias($dias, $resultados);
             $box = new Box($index->cor, $resultado->TOTAL, $index->descricao, $index->nome, $index->tempo_refresh);
             $boxHtml = $box->render();
             echo '<div class="col-lg-4 col-6" id="Chart-' . $index->nome . '">' . $boxHtml . '</div>';
+            file_put_contents($compHtml . $index->nome . '.html', $boxHtml);
           }
         } else {
           if (file_exists($compHtml . $index->nome . '.html')) {
@@ -79,6 +80,7 @@ $querysComponentes = mudarDias($dias, $resultados);
             $chart = new Chart($index->nome, $index->descricao, $index->tipo, $labels, $data, $index->cor, $index->tempo_refresh);
             $chartHtml = $chart->render();
             echo '<div class="col-lg-6" id="Chart-' . $index->nome . '">' . $chartHtml . '</div>';
+            file_put_contents($compHtml . $index->nome . '.html', $chartHtml);
           }
         }
       }

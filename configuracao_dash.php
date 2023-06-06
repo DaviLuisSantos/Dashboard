@@ -5,7 +5,6 @@ require_once 'querys-dash.php';
 
 $querysComponentes = $resultados;
 $davizaun = getGraf($graficos);
-//echo json_encode($graficos);
 ?>
 
 <!DOCTYPE html>
@@ -117,52 +116,80 @@ $davizaun = getGraf($graficos);
         </div>
 
         <h1>Adicionar novo gráfico:</h1>
-        <form action="processar_configuracao.php" method="POST">
-            <div class="form-group">
-                <label for="titulo">Título do gráfico:</label>
-                <input type="text" id="titulo" name="titulo" required class="form-control">
-            </div>
-
-            <!-- Outros campos do formulário, como tipo de gráfico, informações, etc. -->
-
-            <input type="submit" value="Adicionar" class="btn btn-primary">
-        </form>
-
         <button class="btn btn-primary" onclick="adicionarGrafico()">+</button>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Modal para adição do gráfico -->
+    <div class="modal fade" id="adicionarModal" tabindex="-1" role="dialog" aria-labelledby="adicionarModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adicionarModalLabel">Adicionar Novo Gráfico</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulário para adicionar o novo gráfico -->
+                    <form action="processar_configuracao.php" method="POST">
+                        <div class="form-group">
+                            <label for="titulo">Título do gráfico:</label>
+                            <input type="text" id="titulo" name="titulo" required class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="descricao">Descrição do gráfico:</label>
+                            <input type="text" id="descricao" name="descricao" required class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cor">Cor do gráfico:</label>
+                            <input type="text" id="cor" name="cor" required class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ordem_exib">Ordem de exibição:</label>
+                            <input type="number" id="ordem_exib" name="ordem_exib" required class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tempo_refresh">Tempo de atualização (minutos):</label>
+                            <input type="number" id="tempo_refresh" name="tempo_refresh" required class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="type">Tipo de gráfico:</label>
+                            <select id="type" name="type" class="form-control" required>
+                                <?php foreach ($graficos as $cada) { ?>
+                                    <option value="<?php echo $cada->id; ?>"><?php echo $cada->nome; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="query">Query:</label>
+                            <textarea id="query" name="query" required class="form-control"></textarea>
+                        </div>
+
+                        <input type="submit" value="Adicionar" class="btn btn-primary">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./dist/js/jquery.min.js"></script>
+    <script src="./dist/js/bootstrap.min.js"></script>
 
     <script>
-        $(document).ready(function () {
-            // ...
-
-            // Manipulador de evento de clique para o botão de voltar
-            $('#voltarBtn').click(function () {
-                window.location.href = 'starter.php'; // Substitua 'pagina-de-origem.html' pelo URL da página de origem
-            });
-        });
-
-        function editarGrafico(id) {
-            // Lógica para manipular a edição do gráfico com o ID especificado
-            // por exemplo, preencher o formulário no modal com os dados do gráfico
-            // e exibir o modal
-            $('#titulo_' + id).val('<?php echo $grafico->nome; ?>');
-            $('#descricao_' + id).val('<?php echo $grafico->descricao; ?>');
-            $('#cor_' + id).val('<?php echo $grafico->cor; ?>');
-            $('#ordem_exib_' + id).val('<?php echo $grafico->ordem_exib; ?>');
-            $('#tempo_refresh_' + id).val('<?php echo $grafico->tempo_refresh; ?>');
-            $('#type_' + id).val('<?php echo $grafico->type; ?>');
-            $('#query_' + id).val("<?php echo $grafico->query; ?>");
-
-            $('#editarModal_' + id).modal('show');
-        }
-
         function adicionarGrafico() {
-            // Lógica para adicionar um novo gráfico, como redirecionar para uma página de criação de gráficos
+            $('#adicionarModal').modal('show');
         }
+
+        $('#voltarBtn').click(function () {
+            window.location.href = 'index.php';
+        });
     </script>
 </body>
 

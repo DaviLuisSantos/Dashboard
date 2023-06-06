@@ -3,7 +3,7 @@ include '../z/config.php';
 require_once 'ComponentesVisualizacao.php';
 require_once 'querys-dash.php';
 
-$querysComponentes = mudarDias(365, $resultados);
+$querysComponentes = $resultados;
 
 $compHtml = __DIR__ . "./resultados/resultados_" . date('Y-n-j') . "_";
 

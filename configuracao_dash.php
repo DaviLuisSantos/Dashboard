@@ -3,17 +3,23 @@ include '../z/config.php';
 require_once 'ComponentesVisualizacao.php';
 require_once 'querys-dash.php';
 
+session_start();
+
 $querysComponentes = $resultados;
 $davizaun = getGraf($graficos);
+if ($_SESSION['LINEAR'] != 1) {
+    echo '<script> alert(\'Acesso negado.\');  window.location="./starter.php"; </script>';
+
+}
 ?>
 
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Página de Configuração</title>
+    <title>Configuração Dashboard | Segmix</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="./dist//css//bootstrap.min.css">
+    <link rel="stylesheet" href="./dist/css/bootstrap/bootstrap.min.css">
 </head>
 
 <?php include 'cabecalho.php'; ?>
@@ -31,10 +37,11 @@ $davizaun = getGraf($graficos);
                     <div class="card mb-3">
                         <div class="card-body">
                             <h3 class="card-title">
-                                <?php echo $grafico->nome; ?>
+                                <?php echo $grafico->descricao; ?>
+
                             </h3>
                             <p class="card-text">
-                                <?php echo $grafico->descricao; ?>
+                                <?php echo $grafico->nome; ?>
                             </p>
                             <button class="btn btn-primary" data-toggle="modal"
                                 data-target="#editarModal_<?php echo $grafico->id; ?>">Editar</button>
@@ -48,8 +55,8 @@ $davizaun = getGraf($graficos);
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editarModalLabel_<?php echo $grafico->id; ?>">Editar Gráfico
-                                    - <?php echo $grafico->nome; ?></h5>
+                                <h5 class="modal-title" id="editarModalLabel_<?php echo $grafico->id; ?>">Editar Gráfico -
+                                    <?php echo $grafico->nome; ?></h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -106,12 +113,49 @@ $davizaun = getGraf($graficos);
                                     </div>
 
                                     <input type="hidden" name="grafico_id" value="<?php echo $grafico->id; ?>">
-                                    <input type="submit" value="Salvar" class="btn btn-primary">
+
+                                    <!-- Botões de Excluir e Salvar -->
+                                    <div class="row">
+                                        <div class="col">
+                                            <button type="submit" class="btn btn-primary float-left">Salvar</button>
+                                        </div>
+                                        <div class="col">
+                                            <button type="button" class="btn btn-danger float-right" data-toggle="modal"
+                                                data-target="#excluirModal_<?php echo $grafico->id; ?>">Excluir</button>
+                                        </div>
+
+                                    </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- Modal para confirmação de exclusão do gráfico -->
+                <div class="modal fade" id="excluirModal_<?php echo $grafico->id; ?>" tabindex="-1" role="dialog"
+                    aria-labelledby="excluirModalLabel_<?php echo $grafico->id; ?>" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="excluirModalLabel_<?php echo $grafico->id; ?>">Excluir Gráfico -
+                                    <?php echo $grafico->nome; ?></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Deseja realmente excluir o gráfico
+                                    <?php echo $grafico->nome; ?>?
+                                </p>
+                                <form action="processar_exclusao.php" method="POST">
+                                    <input type="hidden" name="grafico_id" value="<?php echo $grafico->id; ?>">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                    <input type="submit" value="Excluir" class="btn btn-danger">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             <?php } ?>
         </div>
 
@@ -132,7 +176,7 @@ $davizaun = getGraf($graficos);
                 </div>
                 <div class="modal-body">
                     <!-- Formulário para adicionar o novo gráfico -->
-                    <form action="processar_configuracao.php" method="POST">
+                    <form action="processar_adicao.php" method="POST">
                         <div class="form-group">
                             <label for="titulo">Título do gráfico:</label>
                             <input type="text" id="titulo" name="titulo" required class="form-control">
@@ -140,27 +184,27 @@ $davizaun = getGraf($graficos);
 
                         <div class="form-group">
                             <label for="descricao">Descrição do gráfico:</label>
-                            <input type="text" id="descricao" name="descricao" required class="form-control">
+                            <input type="text" id="descricao" name="descricao" class="form-control">
                         </div>
 
                         <div class="form-group">
                             <label for="cor">Cor do gráfico:</label>
-                            <input type="text" id="cor" name="cor" required class="form-control">
+                            <input type="text" id="cor" name="cor" class="form-control">
                         </div>
 
                         <div class="form-group">
                             <label for="ordem_exib">Ordem de exibição:</label>
-                            <input type="number" id="ordem_exib" name="ordem_exib" required class="form-control">
+                            <input type="number" id="ordem_exib" name="ordem_exib" class="form-control">
                         </div>
 
                         <div class="form-group">
                             <label for="tempo_refresh">Tempo de atualização (minutos):</label>
-                            <input type="number" id="tempo_refresh" name="tempo_refresh" required class="form-control">
+                            <input type="number" id="tempo_refresh" name="tempo_refresh" class="form-control">
                         </div>
 
                         <div class="form-group">
                             <label for="type">Tipo de gráfico:</label>
-                            <select id="type" name="type" class="form-control" required>
+                            <select id="type" name="type" class="form-control">
                                 <?php foreach ($graficos as $cada) { ?>
                                     <option value="<?php echo $cada->id; ?>"><?php echo $cada->nome; ?></option>
                                 <?php } ?>
@@ -169,7 +213,7 @@ $davizaun = getGraf($graficos);
 
                         <div class="form-group">
                             <label for="query">Query:</label>
-                            <textarea id="query" name="query" required class="form-control"></textarea>
+                            <textarea id="query" name="query" class="form-control"></textarea>
                         </div>
 
                         <input type="submit" value="Adicionar" class="btn btn-primary">
@@ -179,8 +223,10 @@ $davizaun = getGraf($graficos);
         </div>
     </div>
 
-    <script src="./dist/js/jquery.min.js"></script>
-    <script src="./dist/js/bootstrap.min.js"></script>
+
+
+    <script src="./dist/js/jquery/jquery-3.7.0.min.js"></script>
+    <script src="./dist/js/bootstrap/bootstrap.bundle.min.js"></script>
 
     <script>
         function adicionarGrafico() {
@@ -188,7 +234,7 @@ $davizaun = getGraf($graficos);
         }
 
         $('#voltarBtn').click(function () {
-            window.location.href = 'index.php';
+            window.location.href = 'starter.php';
         });
     </script>
 </body>

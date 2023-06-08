@@ -1,30 +1,11 @@
 <?php
 include '../z/config.php';
 // echo json_encode($donutData);
+include './login/session.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dashboard | Segmix</title>
-
-  <!-- Importar Bootstrap CSS -->
-  <link rel="stylesheet" href="./dist/css/bootstrap.min.css">
-
-  <!-- Importar estilos personalizados -->
-  <link rel="stylesheet" href="./dist/css/starter.css">
-  <link rel="stylesheet" href="./dist/css/fonts.googleapis.com_css_family.css">
-
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-
-  <!-- Importar AdminLTE style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-
-</head>
 
 <body>
   <?php include 'cabecalho.php'; ?>
@@ -59,7 +40,7 @@ include '../z/config.php';
 
       // Fazer uma solicitação ajax para obter os dados atualizados
       $.ajax({
-        url: "relatorioVisita.php",
+        url: "relatorioDash.php",
         type: "GET",
         dataType: "html", // Especificar o tipo de dados esperado
         success: function (result) {

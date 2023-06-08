@@ -1,19 +1,62 @@
 <?php
-// Obtém o ID mais alto na tabela de gráficos existentes
-$query = "SELECT MAX(id) AS max_id FROM tabela_graficos";
-$resultado = mysqli_query($conexao, $query);
-$row = mysqli_fetch_assoc($resultado);
-$proximo_id = $row['max_id'] + 1;
+include '../z/config.php';
 
-// Obtém os dados do formulário
-$titulo = $_POST['titulo'];
-// Obtenha outros campos do formulário, se houver
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-// Insere o novo gráfico na tabela
-$query = "INSERT INTO PF_QUERY (id, titulo) VALUES ('$proximo_id', '$titulo')";
-// Execute a query para inserir os dados na tabela
+    // Obtém o ID mais alto na tabela de gráficos existentes
+    $query = "SELECT MAX(ID) AS max_id FROM PF_QUERY";
+    $stmt = $dbConn->prepare($query);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $proximo_id = $row['max_id'] + 1;
 
-// Redireciona de volta para a página de configuração
-header("Location: pagina-de-configuracao.php");
-exit();
+    // Obtém os dados do formulário
+    $titulo = $_POST['titulo'];
+    $descricao = $_POST['descricao'];
+    $cor = $_POST['cor'];
+    $ordem_exib = $_POST['ordem_exib'];
+    $tempo_refresh = $_POST['tempo_refresh'];
+    $type = $_POST['type'];
+    $query = $_POST['query'];
+
+    // Insere o novo gráfico na tabela
+    $query2 = "INSERT INTO PF_QUERY ( NOME, DESCRICAO, COR, ORDEM_EXIB, ID_MOD_DASHBOARD, TEMPO_REFRESH, SQL_QUERY) 
+VALUES ( :NOME, :DESCRICAO, :COR, :ORDEM_EXIB, :ID_MOD_DASHBOARD, :TEMPO_REFRESH, :SQL_QUERY)";
+    $stmt2 = $dbConn->prepare($query2);
+    if ($stmt2 === false) {
+        $error = $dbConn->errorInfo();
+        echo '<script>alert("Erro ao preparar a consulta: ' . $error[2] . '");</script>';
+        exit();
+    }
+    
+
+    $stmt2->bindParam(':NOME', $titulo);
+    $stmt2->bindParam(':DESCRICAO', $descricao);
+    $stmt2->bindParam(':COR', $cor);
+    $stmt2->bindParam(':ORDEM_EXIB', $ordem_exib);
+    $stmt2->bindParam(':ID_MOD_DASHBOARD', $type);
+    $stmt2->bindParam(':TEMPO_REFRESH', $tempo_refresh);
+    $stmt2->bindParam(':SQL_QUERY', $query);
+    $success = $stmt2->execute();
+
+
+    // Verifica se a inserção foi bem-sucedida
+    if ($success) {
+        // Gráfico criado com sucesso
+        echo '<script>alert("Gráfico criado");</script>';
+    } else {
+        // Erro ao criar o gráfico
+        $error = $stmt2->errorInfo();
+        echo '<script>alert("Erro ao criar o gráfico: ' . $error[2] . '");</script>';
+    }
+
+
+    // Redireciona de volta para a página de configuração
+    echo '<script>window.location.href = "configuracao_dash.php";</script>';
+    exit();
+} else {
+    // Se o formulário não foi enviado, redirecione para a página de configuração
+    header("Location: davizaun.php");
+    exit();
+}
 ?>

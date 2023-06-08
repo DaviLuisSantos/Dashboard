@@ -2,6 +2,7 @@
 include '../z/config.php';
 require_once 'ComponentesVisualizacao.php';
 require_once 'querys-dash.php';
+include './login/session.php';
 
 $dias = 10;
 $filename = __DIR__ . "./resultados/resultados_" . date('Y-m-d') . "_" . $dias . "dias.html";
@@ -11,37 +12,6 @@ $querysComponentes = mudarDias($dias, $resultados);
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dashboard | Segmix</title>
-
-  <!-- Importar Bootstrap CSS -->
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-
-  <style>
-    .chart-canvas {
-      min-height: 200px;
-      height: 200px;
-      max-height: 200px;
-      width: 100%;
-    }
-
-    @media (min-width: 768px) {
-      .chart-canvas {
-        min-height: 350px;
-        height: 350px;
-        max-height: 350px;
-      }
-    }
-  </style>
-</head>
 
 <body>
   <div class="container-fluid">
@@ -87,7 +57,7 @@ $querysComponentes = mudarDias($dias, $resultados);
       ?>
     </div>
 
-    <button type="button" class="btn btn-block bg-primary btn-lg" id="configBtn">Ir para página de configuração</button>
+    <button type="button" class="btn-primary btn btn-block btn-lg" id="configBtn">Ir para página de configuração</button>
 
   </div>
 

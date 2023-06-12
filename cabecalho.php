@@ -49,6 +49,9 @@ if (isset($id_admin) && isset($tp_admin)) {
         max-height: 350px;
       }
     }
+    #segmixImg{
+      cursor: pointer;
+    }
   </style>
 
   <script src="plugins/jquery/jquery.min.js"></script>
@@ -69,7 +72,7 @@ if (isset($id_admin) && isset($tp_admin)) {
       </div>
       <div class="card-body table-responsive pad">
         <div>
-          <img src="./dist/img/LogoSegmix_login.png" alt="">
+          <img src="./dist/img/LogoSegmix_login.png" alt="" id="segmixImg">
         </div>
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
         </div>
@@ -84,6 +87,11 @@ if (isset($id_admin) && isset($tp_admin)) {
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   
   <script>
+    $(document).ready(function () {
+      $('#segmixImg').click(function () {
+        window.location.href = '../z/viregfull.php'; // Substitua pela página de configuração correta
+      });
+    });
     // Lógica do tema aqui
     document.addEventListener("DOMContentLoaded", function () {
         // Carregar o tema salvo no armazenamento local (se existir)

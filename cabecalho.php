@@ -21,7 +21,7 @@ if (isset($id_admin) && isset($tp_admin)) {
   <title>Dashboard | Segmix</title>
 
   <!-- Importar Bootstrap CSS -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet" href="./dist/css/fonts.googleapis.com_css_family.css">
   <link rel="stylesheet" href="./dist/css/bootstrap/bootstrap.min.css">
 
   <!-- Importar estilos personalizados -->

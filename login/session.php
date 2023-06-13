@@ -1,6 +1,7 @@
 <?php
-
-include 'C:/AcessoLinear/www/htdocs/z/config.php';
+$dirino= $_SERVER["DOCUMENT_ROOT"];
+$dirino=$dirino.'\z\config.php';
+require $dirino;
 
 session_start();
 

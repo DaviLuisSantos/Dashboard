@@ -3,13 +3,6 @@ include '../z/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Obtém o ID mais alto na tabela de gráficos existentes
-    $query = "SELECT MAX(ID) AS max_id FROM PF_QUERY";
-    $stmt = $dbConn->prepare($query);
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $proximo_id = $row['max_id'] + 1;
-
     // Obtém os dados do formulário
     $titulo = $_POST['titulo'];
     $descricao = $_POST['descricao'];
@@ -30,8 +23,8 @@ VALUES ( :NOME, :DESCRICAO, :COR, :ORDEM_EXIB, :ID_MOD_DASHBOARD, :TEMPO_REFRESH
     }
     
 
-    $stmt2->bindParam(':NOME', $titulo);
-    $stmt2->bindParam(':DESCRICAO', $descricao);
+    $stmt2->bindParam(':NOME', $descricao);
+    $stmt2->bindParam(':DESCRICAO', $titulo);
     $stmt2->bindParam(':COR', $cor);
     $stmt2->bindParam(':ORDEM_EXIB', $ordem_exib);
     $stmt2->bindParam(':ID_MOD_DASHBOARD', $type);

@@ -70,7 +70,7 @@ if ($_SESSION['LINEAR'] != 1) {
                                             value="<?php echo $grafico->descricao; ?>" required class="form-control">
                                     </div>
                                     <div class="form-group">
-                                        <label for="titulo_<?php echo $grafico->id; ?>">Nome:</label>
+                                        <label for="titulo_<?php echo $grafico->id; ?>">Descriçao:</label>
                                         <input type="text" id="titulo_<?php echo $grafico->id; ?>" name="titulo"
                                             value="<?php echo $grafico->nome; ?>" required class="form-control">
                                     </div>

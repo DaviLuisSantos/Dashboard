@@ -160,7 +160,10 @@ class Chart
   public function render()
   {
     $contrastColor = getContrastColor($this->cor);
-    $tempoRefresh = time() + ($this->tempoRefresh * 60); 
+    $tempoRefresh = time() + ($this->tempoRefresh * 60);
+    if ($this->tempoRefresh == 0 || $this->tempoRefresh == null) {
+      $tempoRefresh = 0;
+    }
     $currentTimestamp = time();
     $ttempoRefresh = strtotime($tempoRefresh);
 
@@ -177,19 +180,25 @@ class Chart
   <script>
     var ctx = document.getElementById("' . $this->nome . 'Chart").getContext("2d");
     var ' . $this->nome . 'Chart = new Chart(ctx, ' . json_encode($this->config) . ');
+    </script>';
 
-    setInterval(function () {
-      setTimeout(function(){
-      var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").getAttribute("data-tempo-refresh"));
-      var currentTime = Math.floor(Date.now() / 1000); // Obtém o tempo atual em segundos
+    if ($tempoRefresh !== 0) {
+      $html .= '
+      <script>
+      setInterval(function () {
+        setTimeout(function(){
+        var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").getAttribute("data-tempo-refresh"));
+        var currentTime = Math.floor(Date.now() / 1000); // Obtém o tempo atual em segundos
+  
+        if (currentTime >= tempoRefresh) {
+          var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").setAttribute("data-tempo-refresh", Math.floor(Date.now() / 1000)+120000));
+          atualizarChart("' . $this->nome . '");
+        }
+      },1000);
+      }, 1000);
+    </script>';
+    }
 
-      if (currentTime >= tempoRefresh) {
-        var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").setAttribute("data-tempo-refresh", Math.floor(Date.now() / 1000)+120000));
-        atualizarChart("' . $this->nome . '");
-      }
-    },1000);
-    }, 1000);
-  </script>';
 
     return $html;
   }
@@ -218,6 +227,9 @@ class Box
   {
     $contrastColor = getContrastColor($this->bgColor);
     $tempoRefresh = time() + ($this->tempoRefresh * 60); // Adiciona 2 minutos ao tempo atual
+    if ($this->tempoRefresh == 0 || $this->tempoRefresh == null) {
+      $tempoRefresh = 0;
+    }
     $currentTimestamp = time();
     $ttempoRefresh = strtotime($tempoRefresh);
 
@@ -227,7 +239,9 @@ class Box
         <h3 class="text-' . $contrastColor . '" id="' . $this->nome . 'Chart" data-tempo-refresh="' . $tempoRefresh . '" >' . $this->valor . '</h3>
         <p class="text-' . $contrastColor . '">' . $this->titulo . '</p>
       </div>
-    </div>
+    </div>';
+    if ($tempoRefresh !== 0) {
+      $html .= '
     <script>
     setInterval(function () {
       var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").getAttribute("data-tempo-refresh"));
@@ -239,6 +253,7 @@ class Box
       }
     }, 1000);
   </script>';
+    }
 
     return $html;
   }

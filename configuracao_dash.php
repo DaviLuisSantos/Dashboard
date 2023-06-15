@@ -206,12 +206,13 @@ if ($_SESSION['LINEAR'] != 1) {
 
                         <div class="form-group">
                             <label for="type">Tipo de gráfico:</label>
-                            <select id="type" name="type" class="form-control">
+                            <select id="type" name="type" class="form-control" type_id="99">
                                 <?php foreach ($graficos as $cada) { ?>
                                     <option value="<?php echo $cada->id; ?>"><?php echo $cada->nome; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
+                        <img id="imagem_99" src="" alt="Imagem" style="display: none;"  class="img-thumbnail">
 
                         <div class="form-group">
                             <label for="query">Query:</label>

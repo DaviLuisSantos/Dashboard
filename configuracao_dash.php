@@ -93,19 +93,21 @@ if ($_SESSION['LINEAR'] != 1) {
                                             class="form-control">
                                     </div>
                                     <div class="form-group">
-                                        <label for="type_<?php echo $grafico->id; ?>">Tipo de Gráfico:</label>
-                                        <select id="type_<?php echo $grafico->id; ?>" name="type" class="form-control"
-                                            required>
-                                            <?php
-                                            // Gerar as opções no formulário
-                                            foreach ($graficos as $cada) {
-                                                $selected = ($grafico->id_mod_dashboard == $cada->id) ? 'selected' : '';
+  <label for="type_<?php echo $grafico->id; ?>">Tipo de Gráfico:</label>
+  <select id="type_<?php echo $grafico->id; ?>" name="type" type_id="<?php echo $grafico->id; ?>" class="form-control" required>
+    <?php
+    // Gerar as opções no formulário
+    foreach ($graficos as $cada) {
+      $selected = ($grafico->id_mod_dashboard == $cada->id) ? 'selected' : '';
 
-                                                echo '<option value="' . $cada->id . '" ' . $selected . '>' . $cada->nome . '</option>';
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
+      echo '<option value="' . $cada->id . '" ' . $selected . '>' . $cada->nome . '</option>';
+    }
+    ?>
+  </select>
+</div>
+<img id="imagem_<?php echo $grafico->id; ?>" src="" alt="Imagem" style="display: none;"  class="img-thumbnail">
+
+
                                     <div class="form-group">
                                         <label for="query_<?php echo $grafico->id; ?>">Query:</label>
                                         <textarea id="query_<?php echo $grafico->id; ?>" name="query" required
@@ -237,6 +239,46 @@ if ($_SESSION['LINEAR'] != 1) {
             window.location.href = 'starter.php';
         });
     </script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var selectElements = document.querySelectorAll('select[name="type"]');
+
+    selectElements.forEach(function(selectElement) {
+      selectElement.addEventListener('change', showSelectedImage);
+      // Chama a função showSelectedImage() para exibir a imagem pré-selecionada no carregamento inicial
+      showSelectedImage.call(selectElement);
+    });
+
+    function showSelectedImage() {
+      var selectedOption = this.value;
+      var typeID = this.getAttribute('type_id');
+      var imageElement = document.getElementById('imagem_' + typeID);
+
+      // Defina as URLs das imagens correspondentes aos valores
+      var imgUrls = [
+        "./dist/img/charts/graficoLabel.png",
+        "./dist/img/charts/graficoPizza.png",
+        "./dist/img/charts/graficoBarra.png",
+        "./dist/img/charts/graficoLinha.png"
+      ];
+
+      // Verifique se o typeID e a opção selecionada são válidos
+      if (typeID !== null && selectedOption >= 0 && selectedOption <= 3) {
+        var imgUrl = imgUrls[selectedOption];
+
+        // Exiba a imagem correspondente
+        imageElement.src = imgUrl;
+        imageElement.style.display = 'block';
+      } else {
+        imageElement.style.display = 'none'; // Oculta a imagem se o typeID ou a opção selecionada forem inválidos
+      }
+    }
+  });
+</script>
+
+
+
+
 </body>
 
 </html>

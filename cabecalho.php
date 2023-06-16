@@ -51,6 +51,7 @@ if (isset($id_admin) && isset($tp_admin)) {
     }
     #segmixImg{
       cursor: pointer;
+      padding:5px;
     }
   </style>
 
@@ -58,6 +59,7 @@ if (isset($id_admin) && isset($tp_admin)) {
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="plugins/chart.js/Chart.min.js"></script>
   <script src="dist/js/adminlte.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
 </head>
 
   

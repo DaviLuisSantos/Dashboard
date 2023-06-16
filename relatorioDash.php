@@ -12,7 +12,30 @@ $querysComponentes = mudarDias($dias, $resultados);
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+<script>
+    $(document).ready(function() {
+  function adicionarBotao() {
+    // Cria o botão
+    var botao = $('<button>', {
+      type: 'button',
+      class: 'btn-primary btn btn-block btn-lg',
+      id: 'configBtn',
+      text: 'Ir para página de configuração'
+    });
 
+    // Adiciona o botão como último elemento da div
+    $('.container-fluid').append(botao);
+
+    // Define o evento de clique para redirecionar para a página de configuração
+    botao.click(function() {
+      window.location.href = 'configuracao_dash.php'; // Substitua pela página de configuração correta
+    });
+  }
+
+  // Chama a função para adicionar o botão
+  adicionarBotao();
+});
+</script>
 <body>
   <div class="container-fluid">
     <div class="row" id="dashboard">
@@ -57,8 +80,6 @@ $querysComponentes = mudarDias($dias, $resultados);
       ?>
     </div>
 
-    <button type="button" class="btn-primary btn btn-block btn-lg" id="configBtn">Ir para página de configuração</button>
-
   </div>
 
   <!-- Importar jQuery -->
@@ -70,12 +91,9 @@ $querysComponentes = mudarDias($dias, $resultados);
   <!-- AdminLTE App -->
   <script src="dist/js/adminlte.min.js"></script>
 
-  <script>
-    $(document).ready(function () {
-      $('#configBtn').click(function () {
-        window.location.href = 'configuracao_dash.php'; // Substitua pela página de configuração correta
-      });
-    });
+
+<script>
+
 
     function getCurrentDate() {
       var today = new Date();

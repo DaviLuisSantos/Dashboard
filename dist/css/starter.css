@@ -129,6 +129,9 @@ body.dark .chart-grid-line {
   top: 20px;
   right: 20px;
 }
+#logOutBtn {
+  margin: 20px;
+}
 
 .theme-switch-toggle {
   position: relative;

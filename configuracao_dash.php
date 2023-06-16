@@ -52,7 +52,7 @@ if ($_SESSION['LINEAR'] != 1) {
                 <!-- Modal para edição do gráfico -->
                 <div class="modal fade" id="editarModal_<?php echo $grafico->id; ?>" tabindex="-1" role="dialog"
                     aria-labelledby="editarModalLabel_<?php echo $grafico->id; ?>" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="editarModalLabel_<?php echo $grafico->id; ?>">Editar Gráfico -
@@ -168,7 +168,7 @@ if ($_SESSION['LINEAR'] != 1) {
     <!-- Modal para adição do gráfico -->
     <div class="modal fade" id="adicionarModal" tabindex="-1" role="dialog" aria-labelledby="adicionarModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="adicionarModalLabel">Adicionar Novo Gráfico</h5>

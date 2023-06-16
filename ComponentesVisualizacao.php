@@ -167,19 +167,73 @@ class Chart
     $currentTimestamp = time();
     $ttempoRefresh = strtotime($tempoRefresh);
 
-    $html = '
-  <div class="card">
-    <div class="card-header" style="background-color:#' . $this->cor . '">
-      <h3 class="card-title text-' . $contrastColor . '">' . $this->descricao . '</h3>
-    </div>
-    <div class="card-body">
-      <canvas class="chart" id="' . $this->nome . 'Chart" style="min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;" data-tempo-refresh="' . $tempoRefresh . '"></canvas>
-    </div>
-  </div>
+    // Extrair o primeiro e último título da descrição
+  $descricao = $this->descricao;
+  $descricaoArray = explode(' ', $descricao);
+  $primeiroTitulo = $descricaoArray[0];
+  $ultimoTitulo = end($descricaoArray);
 
-  <script>
-    var ctx = document.getElementById("' . $this->nome . 'Chart").getContext("2d");
-    var ' . $this->nome . 'Chart = new Chart(ctx, ' . json_encode($this->config) . ');
+  $html = '
+  <div class="btn-group">
+          <button class="btn btn-primary" onclick="showExportOptions' . $this->nome . '()">Exportar</button>
+          <div class="dropdown-menu" id="' . $this->nome . 'ExportOptions">
+          <a class="dropdown-item" onclick="exportChart(`' . $this->nome . 'Card`)">Imagem</a>
+          <a class="dropdown-item" onclick="exportToCSV' . $this->nome . '()">Arquivo CSV</a>
+          </div>
+        </div>
+    <div class="card" id="' . $this->nome . 'Card">
+      <div class="card-header" style="background-color:#' . $this->cor . '">
+        <h3 class="card-title text-' . $contrastColor . '">' . $this->descricao . '</h3>
+      </div>
+      <div class="card-body">
+        <canvas class="chart" id="' . $this->nome . 'Chart" style="min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;" data-tempo-refresh="' . $tempoRefresh . '"></canvas>
+      </div>
+    </div>
+
+    <script>
+      var ctx = document.getElementById("' . $this->nome . 'Chart").getContext("2d");
+      var ' . $this->nome . 'Chart = new Chart(ctx, ' . json_encode($this->config) . ');
+
+      function showExportOptions' . $this->nome . '() {
+        var exportOptions = document.getElementById("' . $this->nome . 'ExportOptions");
+        exportOptions.classList.toggle("show");
+      }
+
+      function exportChart(containerId) {
+        var container = document.getElementById(containerId);
+        domtoimage.toPng(container)
+          .then(function (dataUrl) {
+            var downloadLink = document.createElement("a");
+            downloadLink.href = dataUrl;
+            let frase = containerId;
+let palavraParaExcluir = "Card";
+
+let novaFrase = frase.replace(new RegExp(`\\b` + palavraParaExcluir + `\\b`, `g`), ``);
+
+            downloadLink.download = `Grafico-${novaFrase}.png`;
+            downloadLink.click();
+          })
+          .catch(function (error) {
+            console.error("Erro ao exportar o gráfico:", error);
+          });
+      }
+
+      function exportToCSV' . $this->nome . '() {
+        var data = ' . json_encode($this->config['data']['datasets'][0]['data']) . ';
+        var labels = ' . json_encode($this->config['data']['labels']) . ';
+
+        var csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "' . $primeiroTitulo . ';' . $ultimoTitulo . '\\n";
+        for (var i = 0; i < data.length; i++) {
+          csvContent += labels[i] + ";" + data[i] + "\\n";
+        }
+
+        var encodedUri = encodeURI(csvContent);
+        var downloadLink = document.createElement("a");
+        downloadLink.href = encodedUri;
+        downloadLink.download = "dados-' . $this->descricao . '.csv";
+        downloadLink.click();
+      }
     </script>';
 
     if ($tempoRefresh !== 0) {

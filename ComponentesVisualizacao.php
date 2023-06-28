@@ -223,7 +223,7 @@ let novaFrase = frase.replace(new RegExp(`\\b` + palavraParaExcluir + `\\b`, `g`
         var labels = ' . json_encode($this->config['data']['labels']) . ';
 
         var csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "' . $primeiroTitulo . ';' . $ultimoTitulo . '\\n";
+        csvContent += "' . $this->descricao.'\\n";
         for (var i = 0; i < data.length; i++) {
           csvContent += labels[i] + ";" + data[i] + "\\n";
         }

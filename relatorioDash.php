@@ -10,8 +10,6 @@ $compHtml = __DIR__ . "./resultados/resultados_" . date('Y-m-d') . "_";
 
 $querysComponentes = mudarDias($dias, $resultados);
 ?>
-<!DOCTYPE html>
-<html lang="pt-BR">
 <script>
     $(document).ready(function() {
   function adicionarBotao() {
@@ -24,7 +22,7 @@ $querysComponentes = mudarDias($dias, $resultados);
     });
 
     // Adiciona o botão como último elemento da div
-    $('.container-fluid').append(botao);
+    $('#containerBtn').append(botao);
 
     // Define o evento de clique para redirecionar para a página de configuração
     botao.click(function() {
@@ -36,8 +34,7 @@ $querysComponentes = mudarDias($dias, $resultados);
   adicionarBotao();
 });
 </script>
-<body>
-  <div class="container-fluid">
+  <div class="container-fluid" id="containerBtn">
     <div class="row" id="dashboard">
       <?php
       foreach ($querysComponentes as $index) {
@@ -130,6 +127,3 @@ $querysComponentes = mudarDias($dias, $resultados);
       });
     }
   </script>
-</body>
-
-</html>

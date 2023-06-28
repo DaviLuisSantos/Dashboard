@@ -67,13 +67,69 @@ body.dark {
   --modal-body-bg: #333333;
 }
 
-body.dark {
+body.dark .navbar {
+  background-color: var(--bg-secondary);
+}
+
+body.dark .sidebar {
   background-color: var(--bg-primary);
+}
+
+body.dark .nav-link {
+  color: var(--text-secondary);
+}
+
+body.dark .nav-link:hover {
   color: var(--text-primary);
 }
 
-.container.dark {
+body.dark .nav-link.active {
   background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+body.dark .brand-link {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+body.dark .sidebar-light-primary .nav>.nav-item>.nav-link {
+  color: var(--text-secondary);
+}
+
+body.dark .sidebar-light-primary .nav>.nav-item>.nav-link:hover {
+  color: var(--text-primary);
+}
+
+body.dark .sidebar-light-primary .nav>.nav-item>.nav-link.active {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+body.dark .sidebar-light-primary .nav>.nav-item>.nav-link.active>.nav-icon {
+  color: var(--text-primary);
+}
+
+body.dark .navbar>.navbar-nav>.nav-item>.nav-link {
+  color: var(--text-secondary);
+}
+
+body.dark .navbar>.navbar-nav>.nav-item>.nav-link:hover {
+  color: var(--text-primary);
+}
+
+body.dark .navbar>.navbar-nav>.nav-item>.nav-link.active {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+body.dark .navbar>.navbar-nav>.nav-item>.nav-link.active>.nav-icon {
+  color: var(--text-primary);
+}
+
+body.dark .content-wrapper {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 body.dark .btn-primary {
@@ -121,16 +177,14 @@ body.dark .modal-body {
 }
 
 body.dark .chart-grid-line {
-  stroke: rgb(255, 255, 255); /* define a cor da grade para o tema escuro */
+  stroke: rgb(255, 255, 255);
+  /* define a cor da grade para o tema escuro */
 }
 
 .theme-switch-container {
   position: fixed;
   top: 20px;
   right: 20px;
-}
-#logOutBtn {
-  margin: 20px;
 }
 
 .theme-switch-toggle {
@@ -168,14 +222,14 @@ body.dark .chart-grid-line {
   transition: .4s;
 }
 
-input:checked + .theme-switch-slider {
+input:checked+.theme-switch-slider {
   background-color: #2196F3;
 }
 
-input:focus + .theme-switch-slider {
+input:focus+.theme-switch-slider {
   box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked + .theme-switch-slider:before {
+input:checked+.theme-switch-slider:before {
   transform: translateX(26px);
 }

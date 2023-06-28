@@ -1,19 +1,3 @@
-
-<?php
-session_start();
-
-$id_admin = $_SESSION['id_admin'];
-$tp_admin = $_SESSION['tp_admin'];
-
-// Verifica se o usuário está logado
-if (isset($id_admin) && isset($tp_admin)) {
-    // Se o usuário estiver logado, exibe o botão de log out
-    echo '<button id="logOutBtn" class="btn btn-primary">Log Out</button>';
-    
-}
-?>
-
-
   
     <head>
   <meta charset="utf-8">
@@ -29,10 +13,11 @@ if (isset($id_admin) && isset($tp_admin)) {
   <link rel="stylesheet" href="./dist/css/fonts.googleapis.com_css_family.css">
 
   <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="./plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="./plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
 
   <!-- Importar AdminLTE style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="./dist/css/adminlte.min.css">
 
   <style>
     .chart-canvas {
@@ -55,36 +40,30 @@ if (isset($id_admin) && isset($tp_admin)) {
     }
   </style>
 
-  <script src="plugins/jquery/jquery.min.js"></script>
-  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="plugins/chart.js/Chart.min.js"></script>
-  <script src="dist/js/adminlte.min.js"></script>
+  <script src="./plugins/jquery/jquery.min.js"></script>
+  <script src="./plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="./plugins/chart.js/Chart.min.js"></script>
+  <script src="./dist/js/adminlte.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+  <script src="./plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 </head>
 
   
     <!-- Importar Bootstrap CSS -->
     <link rel="stylesheet" href="./dist/css/bootstrap/bootstrap.min.css"><!-- cabecalho.php -->
-    <div class="wrapper">
-      <div class="theme-switch-container">
-        <label class="theme-switch-toggle">
-          <input type="checkbox" id="themeSwitch">
-          <span class="theme-switch-slider"></span>
-        </label>
-      </div>
       <div class="card-body table-responsive pad">
         <div>
           <img src="./dist/img/LogoSegmix_login.png" alt="" id="segmixImg">
         </div>
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
         </div>
-      </div>
-  </div>
   
   
   <!-- Incluir o jQuery -->
   <script src="plugins/jquery/jquery.min.js"></script>
   
+  <script src="./dist/js/adminlte.min.js"></script>
+
   <!-- Incluir o Bootstrap JS -->
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   
@@ -132,9 +111,7 @@ if (isset($id_admin) && isset($tp_admin)) {
           localStorage.setItem('theme', 'light');
         }
       });
-      $('#logOutBtn').click(function () {
-            window.location.href = './login/logout.php';
-        });
+      
   </script>
 
   

@@ -2,7 +2,7 @@
 
     session_start();
 
-    include '../z/config.php';
+    include './config/config.php';
 
     unset($_SESSION['id_admin']);
 

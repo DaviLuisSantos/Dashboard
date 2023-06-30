@@ -1,15 +1,4 @@
-<?php
-include '../z/config.php';
-// echo json_encode($donutData);
-include './login/session.php';
-
-$id_admin = $_SESSION['id_admin'];
-$tp_admin = $_SESSION['tp_admin'];
-$nome_adm=$_SESSION['nome_admin'];
-
-?>
 <!DOCTYPE html>
-<html>
 
 <head>
     <title>Dashboard</title>
@@ -25,20 +14,17 @@ $nome_adm=$_SESSION['nome_admin'];
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
+
 <body class="sidebar-mini layout-fixed">
     <div class="wrapper">
-        <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Botão para abrir e fechar a sidebar -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button">
+                    <a class="nav-link" id="sidebarToggle" href="#" role="button">
                         <i class="fas fa-bars"></i>
                     </a>
                 </li>
             </ul>
-
-            <!-- Botão de mudança de tema -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link" id="themeSwitchBtn" href="#" role="button">
@@ -48,15 +34,11 @@ $nome_adm=$_SESSION['nome_admin'];
             </ul>
         </nav>
 
-        <!-- Barra lateral -->
         <aside class="main-sidebar sidebar-light-primary elevation-4">
-            <!-- Logotipo -->
             <a href="#" class="brand-link">
                 <img src="./dist/img/LogoMini.png" alt="" id="segmixImg" class="img-fluid">
-                <!--- <span class="brand-text font-weight-light">Dashboard</span> --->
             </a>
 
-            <!-- Itens da barra lateral -->
             <div class="sidebar">
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
@@ -64,7 +46,7 @@ $nome_adm=$_SESSION['nome_admin'];
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-user"></i>
-                                <p><?php echo $nome_adm?></p>
+                                <p><?php echo $_SESSION['nome_admin'];?></p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -74,46 +56,44 @@ $nome_adm=$_SESSION['nome_admin'];
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link" >
+                            <a href="#" class="nav-link" carrega="grafico.php">
                                 <i class="nav-icon fas fa-chart-bar"></i>
                                 <p>Gráficos</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link" carrega="tabelas.php">
+                            <a href="Dashboard/tabelas.php" class="nav-link" carrega="tabelas.php">
                                 <i class="nav-icon fas fa-table"></i>
                                 <p>Tabelas</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="papa-fila" class="nav-link" redireciona="../z/viregfull.php">
+                            <a href="../z/viregfull.php" class="nav-link" redireciona="../z/viregfull.php">
                                 <i class="nav-icon fas fa-address-book"></i>
                                 <p>Papa-Fila</p>
                             </a>
                         </li>
-                        <?php
-
-$id_admin = $_SESSION['id_admin'];
-$tp_admin = $_SESSION['tp_admin'];
-
-// Verifica se o usuário está logado
-if (isset($id_admin) && isset($tp_admin)) {
-    // Se o usuário estiver logado, exibe o botão de log out
-    echo '<li class="nav-item">
-    <a href="logout" class="nav-link" redireciona="./login/logout.php">
-      <i class="nav-icon fas fa-sign-out-alt"></i>
-      <p>Logout</p>
-    </a>
-  </li>';
-    
-}
-?>
+                        <li class="nav-item">
+                            <a href="configuracao" class="nav-link" carrega="configuracao_dash.php">
+                                <i class="nav-icon fas fa-gear"></i>
+                                <p>Configuração</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./login/logout.php" class="nav-link" redireciona="./login/logout.php">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>Logout</p>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </div>
+            <div class="sidebar-footer">
+    <span>v0.2</span>
+</div>
+
         </aside>
 
-        <!-- Conteúdo principal -->
         <div class="content-wrapper">
             <?php include 'cabecalho.php'; ?>
         </div>
@@ -127,7 +107,7 @@ if (isset($id_admin) && isset($tp_admin)) {
         <!-- AdminLTE for demo purposes -->
 
         <script>
-        document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", function() {
             // Carregar o tema salvo no armazenamento local (se existir)
             var savedTheme = localStorage.getItem('theme');
             if (savedTheme) {
@@ -144,73 +124,127 @@ if (isset($id_admin) && isset($tp_admin)) {
             });
         });
         $(document).ready(function() {
-  // Função para carregar conteúdo via requisição AJAX
-  function carregarConteudo(url) {
-    $.ajax({
-      url: url,
-      type: 'GET',
-      success: function(result) {
-        // Remover todos os elementos filhos de #conteudo
-        $("#conteudo").empty();
+            // Função para verificar a classe do body e atualizar a barra lateral
+            function toggleSidebar(sentido = null) {
+                var bodyClass = $('body').attr('class');
+                if (sentido == 'fechar') {
+                    $('body').addClass('sidebar-collapse sidebar-closed');
+                    $('body').removeClass('sidebar-open');
+                    return;
+                }
+                if ($(window).width() <= 767) {
+                    if (bodyClass.indexOf('sidebar-open') == -1) {
+                        $('body').removeClass('sidebar-collapse sidebar-closed'); // Remover classes
+                        $('body').addClass('sidebar-open');
+                    } else if (bodyClass.indexOf('sidebar-open') !== -1) {
+                        $('body').addClass('sidebar-collapse sidebar-closed'); // Remover classes
+                        $('body').removeClass('sidebar-open');
+                    }
+                    return;
+                } else if (bodyClass && (bodyClass.indexOf('sidebar-collapse') !== -1 || bodyClass.indexOf(
+                        'sidebar-closed') !== -1)) {
+                    $('body').removeClass('sidebar-collapse sidebar-closed');
+                    $('body').addClass('sidebar-open');
+                } else {
+                    $('body').addClass('sidebar-collapse sidebar-closed');
+                    $('body').removeClass('sidebar-open');
+                }
+            }
 
-        // Adicionar o novo conteúdo, incluindo as tags <script>
-        $("#conteudo").append(result);
+            // Função para carregar o conteúdo via requisição AJAX
+            function carregarConteudo(url) {
+                $("#conteudo").html(`
+    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+      <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  `);
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(result) {
+                        $("#conteudo").empty();
+                        $("#conteudo").append(result);
+                        toggleSidebar('fechar');
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        $("#conteudo").html("Erro (" + jqXHR.status + "): " + errorThrown);
+                    },
+                    complete: function() {
+                        $("#conteudo .d-flex.justify-content-center.align-items-center").remove();
+                    }
+                });
+            }
 
-        toggleSidebar(); // Chamar a função para verificar a classe do body e atualizar a barra lateral
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        // Exibir mensagem de erro com mais informações
-        $("#conteudo").html("Erro (" + jqXHR.status + "): " + errorThrown);
-      },
-      complete: function() {
-        // Remover o feedback visual
-        $("#conteudo .d-flex.justify-content-center.align-items-center").remove();
-      }
-    });
-  }
+            // Função para marcar o item ativo na barra lateral e carregar o conteúdo correspondente
+            function marcarItemAtivo() {
+                var activeItem = localStorage.getItem(
+                    'activeItem'); // Obtém o item ativo do armazenamento local
+                if (activeItem) {
+                    $('.sidebar .nav-link').removeClass('active'); // Remove a classe "active" de todos os itens
+                    var item = $(".nav-link[carrega='" + activeItem + "']");
+                    $(item).addClass('active'); // Adiciona a classe "active" ao item armazenado
 
-  // Função para verificar a classe do body e atualizar a barra lateral
-  function toggleSidebar() {
-    var bodyClass = $('body').attr('class');
-    if (bodyClass && (bodyClass.indexOf('sidebar-collapse') !== -1 || bodyClass.indexOf('sidebar-closed') !== -1)) {
-      $('body').removeClass('sidebar-collapse sidebar-closed');
-    } else {
-      $('body').addClass('sidebar-collapse');
-    }
-  }
+                    // Obtém o atributo "carrega" do item marcado
+                    var carrega = activeItem;
+                    if (carrega) {
+                        carregarConteudo(carrega); // Carrega o conteúdo correspondente ao item marcado
+                    }
+                }
+            }
+            marcarItemAtivo()
 
-  // Manipule o evento de clique nos itens da barra lateral
-  $(document).on('click', '.sidebar .nav-link', function(e) {
-    // Remova a classe "active" de todos os itens da barra lateral
-    $('.sidebar .nav-link').removeClass('active');
+            // Manipule o evento de clique no elemento sidebarToggle
+            $('#sidebarToggle').on('click', function(e) {
+                e.preventDefault();
+                toggleSidebar();
+            });
 
-    // Adicione a classe "active" ao item clicado
-    $(this).addClass('active');
+            // Manipule o evento de clique nos itens da barra lateral
+            $(document).on('click', '.sidebar .nav-link', function(e) {
+                e.preventDefault(); // Evita o redirecionamento padrão
 
-    // Verifique se o item possui o atributo "carrega"
-    var carrega = $(this).attr('carrega');
-    if (carrega) {
-      e.preventDefault(); // Evita o redirecionamento padrão
-      carregarConteudo(carrega); // Chama a função para carregar o conteúdo via requisição AJAX
-    }
+                // Remova a classe "active" de todos os itens da barra lateral
+                $('.sidebar .nav-link').removeClass('active');
 
-    // Verifique se o item possui o atributo "redireciona"
-    var redireciona = $(this).attr('redireciona');
-    if (redireciona) {
-      window.location.href = redireciona;
-    }
+                // Verifique se o item possui o atributo "carrega"
+                var carrega = $(this).attr('carrega');
+                if (carrega) {
 
-    // Verifique a largura da janela para dispositivos móveis
-    if ($(window).width() <= 767) {
-      $('body').removeClass('sidebar-open'); // Fechar a barra lateral em dispositivos móveis
-    }
-  });
+                    // Adicione a classe "active" ao item clicado
+                    $(this).addClass('active');
+                    // Armazena o item ativo no armazenamento local
+                    var activeItem = $(this).attr('carrega');
+                    localStorage.setItem('activeItem', activeItem);
+                    carregarConteudo(
+                        carrega); // Chama a função para carregar o conteúdo via requisição AJAX
+                }
+                var redireciona = $(this).attr('redireciona');
+                if (redireciona) {
+                    window.location.href = redireciona;
+                }
 
-  // Verifique a classe do body ao carregar a página e atualize a barra lateral
-  toggleSidebar();
-});
+            });
 
+            // Verifique a classe do body ao carregar a página e atualize a barra lateral
+            toggleSidebar();
 
+            // Fechar a barra lateral ao tocar em outra parte da tela
+            $(document).on('click', function(e) {
+                var target = $(e.target);
+
+                // Verifique se o elemento clicado não está dentro da barra lateral
+                // Fechar a barra lateral ao tocar fora dela
+                if (!target.closest('#sidebarToggle').length && !target.closest('.sidebar').length) {
+                    $('body').removeClass('sidebar-open'); // Fechar a barra lateral
+                    $('body').addClass('sidebar-collapse sidebar-closed');
+                }
+            });
+
+        });
         </script>
 
-</html>
+
+
+        </html>

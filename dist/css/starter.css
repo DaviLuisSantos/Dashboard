@@ -180,6 +180,16 @@ body.dark .chart-grid-line {
   stroke: rgb(255, 255, 255);
   /* define a cor da grade para o tema escuro */
 }
+.sidebar-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+}
 
 .theme-switch-container {
   position: fixed;

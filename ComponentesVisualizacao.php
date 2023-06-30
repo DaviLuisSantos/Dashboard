@@ -238,19 +238,23 @@ let novaFrase = frase.replace(new RegExp(`\\b` + palavraParaExcluir + `\\b`, `g`
 
     if ($tempoRefresh !== 0) {
       $html .= '
-      <script>
-      setInterval(function () {
-        setTimeout(function(){
-        var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").getAttribute("data-tempo-refresh"));
-        var currentTime = Math.floor(Date.now() / 1000); // Obtém o tempo atual em segundos
-  
+<script>
+  setInterval(function () {
+    setTimeout(function(){
+      var chartElement = document.getElementById("' . $this->nome . 'Chart");
+      if (chartElement) {
+        var tempoRefresh = parseInt(chartElement.getAttribute("data-tempo-refresh"));
+        var currentTime = Math.floor(Date.now() / 1000);
+
         if (currentTime >= tempoRefresh) {
-          var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").setAttribute("data-tempo-refresh", Math.floor(Date.now() / 1000)+120000));
+          chartElement.setAttribute("data-tempo-refresh", Math.floor(Date.now() / 1000) + 120000);
           atualizarChart("' . $this->nome . '");
         }
-      },1000);
-      }, 1000);
-    </script>';
+      }
+    }, 1000);
+  }, 1000);
+</script>';
+
     }
 
 
@@ -298,6 +302,8 @@ class Box
       $html .= '
     <script>
     setInterval(function () {
+      var chartElement = document.getElementById("' . $this->nome . 'Chart");
+      if (chartElement) {
       var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").getAttribute("data-tempo-refresh"));
       var currentTime = Math.floor(Date.now() / 1000); // Obtém o tempo atual em segundos
 
@@ -305,6 +311,7 @@ class Box
         var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").setAttribute("data-tempo-refresh", Math.floor(Date.now() / 1000)+120000));
         atualizarChart("' . $this->nome . '");
       }
+    }
     }, 1000);
   </script>';
     }
@@ -320,6 +327,102 @@ function getContrastColor($hexColor)
   $b = hexdec(substr($hexColor, 4, 2));
   $luma = ($r * 0.299 + $g * 0.587 + $b * 0.114) / 255;
   return $luma > 0.5 ? 'black' : 'white';
+}
+
+class Table
+{
+  private $bgColor;
+  private $data;
+  private $titulo;
+  private $nome;
+  private $tempoRefresh;
+
+  public function __construct($bgColor, $data, $titulo, $nome, $tempoRefresh = 0)
+  {
+    $this->bgColor = $bgColor;
+    $this->data = $data;
+    $this->titulo = $titulo;
+    $this->nome = $nome;
+    $this->tempoRefresh = $tempoRefresh;
+  }
+
+  public function render()
+  {
+    $contrastColor = getContrastColor($this->bgColor);
+    $tempoRefresh = time() + ($this->tempoRefresh * 60); // Adiciona X minutos ao tempo atual
+
+    if ($this->tempoRefresh == 0 || $this->tempoRefresh == null) {
+      $tempoRefresh = 0;
+    }
+
+    $currentTimestamp = time();
+    $ttempoRefresh = strtotime($tempoRefresh);
+
+    $th = '';
+    foreach ($this->data[0] as $key => $value) {
+      $th .= '<th>' . $key . '</th>';
+    }
+
+    $html = '<div class="container-fluid">
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">' . $this->titulo . '</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="' . $this->nome . '" class="table table-bordered table-striped" style="width:100%">
+                        <thead>
+                            <tr>
+                                ' . $th . '
+                            </tr>
+                        </thead>
+                        <tbody>';
+
+    foreach ($this->data as $linha) {
+      $html .= '<tr>';
+      foreach ($linha as $valor) {
+        $html .= '<td>' . $valor . '</td>';
+      }
+      $html .= '</tr>';
+    }
+
+    $html .= '
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>
+                  <!-- /.card -->
+                </div>';
+
+    $html .= '<script>
+    $("#'.$this->nome.'").DataTable( {
+      responsive: true
+  } );
+  </script>';
+
+    if ($tempoRefresh !== 0) {
+      $html .= '
+    <script>
+    setInterval(function () {
+      var chartElement = document.getElementById("' . $this->nome . 'Chart");
+      if (chartElement) {
+      var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").getAttribute("data-tempo-refresh"));
+      var currentTime = Math.floor(Date.now() / 1000); // Obtém o tempo atual em segundos
+
+      if (currentTime >= tempoRefresh) {
+        var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").setAttribute("data-tempo-refresh", Math.floor(Date.now() / 1000)+120000));
+        atualizarChart("' . $this->nome . '");
+      }
+    }
+    }, 1000);
+  </script>';
+    }
+
+    return $html;
+  }
 }
 
 ?>

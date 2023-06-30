@@ -4,35 +4,32 @@ require_once 'ComponentesVisualizacao.php';
 require_once 'querys-dash.php';
 include './login/session.php';
 
+$codUsuario=$_SESSION['id_admin'];
+$nomeUsuario=$_SESSION['nome_admin'];
 $dias = 10;
-$filename = __DIR__ . "./resultados/resultados_" . date('Y-m-d') . "_" . $dias . "dias.html";
-$compHtml = __DIR__ . "./resultados/resultados_" . date('Y-m-d') . "_";
+
+$pastaResult = __DIR__ . "./resultados/";
+
+if (!file_exists($pastaResult)) {
+  mkdir($pastaResult, 0777, true);
+  // A pasta foi criada com sucesso
+} else {
+  // A pasta já existe
+}
+
+$filename = __DIR__ . "./resultados/".$codUsuario."-".$nomeUsuario."/resultados_" . date('Y-m-d') . "_" . $dias . "dias.html";
+$compPasta = __DIR__ . "./resultados/" . $codUsuario . "-" . $nomeUsuario;
+
+if (!file_exists($compPasta)) {
+    mkdir($compPasta, 0777, true);
+    // A pasta foi criada com sucesso
+} else {
+    // A pasta já existe
+}
+$compHtml = __DIR__ . "./resultados/".$codUsuario."-".$nomeUsuario."/resultados_" . date('Y-m-d') . "_";
 
 $querysComponentes = mudarDias($dias, $resultados);
 ?>
-<script>
-    $(document).ready(function() {
-  function adicionarBotao() {
-    // Cria o botão
-    var botao = $('<button>', {
-      type: 'button',
-      class: 'btn-primary btn btn-block btn-lg',
-      id: 'configBtn',
-      text: 'Ir para página de configuração'
-    });
-
-    // Adiciona o botão como último elemento da div
-    $('#containerBtn').append(botao);
-
-    // Define o evento de clique para redirecionar para a página de configuração
-    botao.click(function() {
-      window.location.href = 'configuracao_dash.php'; // Substitua pela página de configuração correta
-    });
-  }
-
-  // Chama a função para adicionar o botão
-  adicionarBotao();
-});
 </script>
   <div class="container-fluid" id="containerBtn">
     <div class="row" id="dashboard">
@@ -89,6 +86,7 @@ $querysComponentes = mudarDias($dias, $resultados);
   <script src="dist/js/adminlte.min.js"></script>
 
 
+
 <script>
 
 
@@ -115,7 +113,7 @@ $querysComponentes = mudarDias($dias, $resultados);
           $('#Chart-' + id).html(result);
 
           // Atualizar o conteúdo do arquivo HTML, se necessário
-          var filename = 'resultados/resultados_' + getCurrentDate() + '_' + id + '.html';
+          var filename = 'resultados/<?php echo $codUsuario.'-'.$nomeUsuario?>/resultados_' + getCurrentDate() + '_' + id + '.html';
           $.post('salvar_html.php', {
             filename: filename,
             html: result

@@ -1,10 +1,12 @@
 <?php
-include '../z/config.php';
-
+include './config/config.php';
+session_start();
+$idoperador= $_SESSION['id_admin'] ;
 require_once 'ComponentesVisualizacao.php';
 
-$sql = "SELECT ID,NOME, DESCRICAO, COR, ORDEM_EXIB, ID_MOD_DASHBOARD,TEMPO_REFRESH, CAST(SQL_QUERY AS VARCHAR(3200) CHARACTER SET UTF8) AS QUERY FROM PF_QUERY";
+$sql = "SELECT ID,NOME, DESCRICAO, COR, ORDEM_EXIB, ID_MOD_DASHBOARD,TEMPO_REFRESH, CAST(SQL_QUERY AS VARCHAR(3200) CHARACTER SET UTF8) AS QUERY FROM PF_QUERY WHERE IDOPERADOR = :IDOPERADOR";
 $stmt = $dbConn->prepare($sql);
+$stmt->bindParam(':IDOPERADOR', $idoperador);
 $stmt->execute();
 $registros = $stmt->fetchAll(PDO::FETCH_OBJ);
 

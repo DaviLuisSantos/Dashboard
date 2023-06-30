@@ -1,5 +1,5 @@
 <?php
-include '../z/config.php';
+include './config/config.php';
 require_once 'ComponentesVisualizacao.php';
 require_once 'querys-dash.php';
 
@@ -7,27 +7,10 @@ session_start();
 
 $querysComponentes = $resultados;
 $davizaun = getGraf($graficos);
-if ($_SESSION['LINEAR'] != 1) {
-    echo '<script> alert(\'Acesso negado.\');  window.location="./starter.php"; </script>';
 
-}
 ?>
 
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Configuração Dashboard | Segmix</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="./dist/css/bootstrap/bootstrap.min.css">
-</head>
-
-<?php include 'cabecalho.php'; ?>
-
-<body>
-
     <div class="container">
-        <button id="voltarBtn" class="btn btn-primary">Voltar</button>
 
         <h1>Gráficos existentes:</h1>
 
@@ -276,10 +259,5 @@ if ($_SESSION['LINEAR'] != 1) {
     }
   });
 </script>
-
-
-
-
-</body>
 
 </html>

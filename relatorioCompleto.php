@@ -1,7 +1,7 @@
 <?php
-include '../z/config.php';
+include './config/config.php';
 
-$dias = $_GET["chave"];
+$dias =60;
 echo "Valor do var:" . $dias;
 
 $resultado = $dbConn->query("SELECT

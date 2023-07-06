@@ -49,15 +49,15 @@
                                 <p><?php echo $_SESSION['nome_admin'];?></p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                       <!--- <li class="nav-item">
                             <a href="Dashboard/starter.php" class="nav-link" carrega="relatorioDash.php">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p>Dashboard</p>
                             </a>
-                        </li>
+                        ---> </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link" carrega="grafico.php">
-                                <i class="nav-icon fas fa-chart-bar"></i>
+                            <a href="#" class="nav-link" carrega="relatorioDash.php">
+                                <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>Gráficos</p>
                             </a>
                         </li>

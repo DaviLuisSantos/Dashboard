@@ -1,12 +1,11 @@
 <?php
-include '../z/config.php';
+include './config/config.php';
 require_once 'ComponentesVisualizacao.php';
 require_once 'querys-dash.php';
 include './login/session.php';
 
 $codUsuario=$_SESSION['id_admin'];
 $nomeUsuario=$_SESSION['nome_admin'];
-$dias = 10;
 
 $pastaResult = __DIR__ . "./resultados/";
 
@@ -28,9 +27,8 @@ if (!file_exists($compPasta)) {
 }
 $compHtml = __DIR__ . "./resultados/".$codUsuario."-".$nomeUsuario."/resultados_" . date('Y-m-d') . "_";
 
-$querysComponentes = mudarDias($dias, $resultados);
+$querysComponentes = $resultados;
 ?>
-</script>
   <div class="container-fluid" id="containerBtn">
     <div class="row" id="dashboard">
       <?php
@@ -49,7 +47,7 @@ $querysComponentes = mudarDias($dias, $resultados);
             echo '<div class="col-lg-4 col-6" id="Chart-' . $index->nome . '">' . $boxHtml . '</div>';
             file_put_contents($compHtml . $index->nome . '.html', $boxHtml);
           }
-        } else {
+        } else if (!($index->tipo == 'table')) {
           if (file_exists($compHtml . $index->nome . '.html')) {
             $html = file_get_contents($compHtml . $index->nome . '.html');
             echo '<div class="col-lg-6" id="Chart-' . $index->nome . '">' . $html . '</div>';
@@ -77,13 +75,13 @@ $querysComponentes = mudarDias($dias, $resultados);
   </div>
 
   <!-- Importar jQuery -->
-  <script src="plugins/jquery/jquery.min.js"></script>
+  <script src="./plugins/jquery/jquery.min.js"></script>
   <!-- Bootstrap 4 -->
-  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="./plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- ChartJS -->
-  <script src="plugins/chart.js/Chart.min.js"></script>
+  <script src="./plugins/chart.js/Chart.min.js"></script>
   <!-- AdminLTE App -->
-  <script src="dist/js/adminlte.min.js"></script>
+  <script src="./dist/js/adminlte.min.js"></script>
 
 
 

@@ -48,6 +48,9 @@ foreach ($registros as $registro) {
         case 'LINHA':
           $obj->tipo='line';
           break;
+          case'TABELA':
+            $obj->tipo='table';
+            break;
   }
   
   $resultados[] = $obj;
@@ -70,7 +73,7 @@ foreach ($registros as $registro) {
 }
 
 
-function mudarDias($dias, $resultados){
+function mudarDias($resultados,$dias=0 ){
   foreach ($resultados as $resultado) {
     $query = str_replace(':DIAS', $dias, $resultado->query);
     $resultado->query = $query;

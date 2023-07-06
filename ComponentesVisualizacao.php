@@ -363,16 +363,13 @@ class Table
       $th .= '<th>' . $key . '</th>';
     }
 
-    $html = '<div class="container-fluid">
-    <div class="row">
-        <div class="col-6">
-            <div class="card">
+    $html = '<div class="card">
                 <div class="card-header">
                     <h3 class="card-title">' . $this->titulo . '</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="' . $this->nome . '" class="table table-bordered table-striped" style="width:100%">
+                    <table id="' . $this->nome . '" class="table table-bordered table-striped" style="width:100%" data-tempo-refresh="' . $tempoRefresh . '">
                         <thead>
                             <tr>
                                 ' . $th . '
@@ -394,32 +391,34 @@ class Table
                     </div>
                     <!-- /.card-body -->
                   </div>
-                  <!-- /.card -->
-                </div>';
+                  <!-- /.card -->';
 
     $html .= '<script>
     $("#'.$this->nome.'").DataTable( {
-      responsive: true
+      responsive: true,
+      language: {
+        url: "./dist/js/pt-BR.json",
+    }
   } );
   </script>';
 
-    if ($tempoRefresh !== 0) {
-      $html .= '
-    <script>
-    setInterval(function () {
-      var chartElement = document.getElementById("' . $this->nome . 'Chart");
-      if (chartElement) {
-      var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").getAttribute("data-tempo-refresh"));
-      var currentTime = Math.floor(Date.now() / 1000); // Obtém o tempo atual em segundos
+  if ($tempoRefresh !== 0) {
+    $html .= '
+  <script>
+  setInterval(function () {
+    var chartElement = document.getElementById("' . $this->nome .'");
+    if (chartElement) {
+    var tempoRefresh = parseInt(document.getElementById("' . $this->nome .'").getAttribute("data-tempo-refresh"));
+    var currentTime = Math.floor(Date.now() / 1000); // Obtém o tempo atual em segundos
 
-      if (currentTime >= tempoRefresh) {
-        var tempoRefresh = parseInt(document.getElementById("' . $this->nome . 'Chart").setAttribute("data-tempo-refresh", Math.floor(Date.now() / 1000)+120000));
-        atualizarChart("' . $this->nome . '");
-      }
+    if (currentTime >= tempoRefresh) {
+      var tempoRefresh = parseInt(document.getElementById("' . $this->nome .'").setAttribute("data-tempo-refresh", Math.floor(Date.now() / 1000)+120000));
+      atualizarChart("' . $this->nome . '");
     }
-    }, 1000);
-  </script>';
-    }
+  }
+  }, 1000);
+</script>';
+  }
 
     return $html;
   }

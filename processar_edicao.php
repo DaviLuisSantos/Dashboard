@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Aqui você deve adicionar a lógica para atualizar os dados do gráfico no banco de dados, utilizando a variável $grafico_id como referência
 
         // Exemplo de atualização no banco de dados utilizando PDO
-        $sql = "UPDATE pf_query SET nome = :titulo, descricao = :descricao, cor = :cor, ordem_exib = :ordem_exib, tempo_refresh = :tempo_refresh, id_mod_dashboard = :type, sql_query = :query WHERE id = :grafico_id";
+        $sql = "UPDATE PF_QUERY SET NOME = :titulo, DESCRICAO = :descricao, COR = :cor, ORDEM_EXIB = :ordem_exib, TEMPO_REFRESH = :tempo_refresh, ID_MOD_DASHBOARD = :type, SQL_QUERY = :query WHERE ID = :grafico_id";
         
         $stmt = $dbConn->prepare($sql);
         $stmt->bindParam(':titulo', $titulo);
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if ($stmt->execute()) {
             echo "Gráfico atualizado com sucesso.";
-            header("Location: configuracao_dash.php");
+            header("Location: starter.php");
 exit();
 
             // Redirecionar para a página de configuração ou exibir uma mensagem de sucesso

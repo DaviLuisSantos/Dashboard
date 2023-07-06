@@ -22,7 +22,7 @@ if ($chartClass->tipo == 'BOX') {
   $resultado = $stmt->fetch(PDO::FETCH_OBJ);
   $boxAtu = new Box($chartClass->cor, $resultado->TOTAL, $chartClass->descricao, $chartClass->nome, $chartClass->tempo_refresh);
   $htmlAtu = $boxAtu->render();
-} else {
+} else if(!($chartClass->tipo == 'table')){
   $stmt = $dbConn->prepare($chartClass->query);
   $stmt->execute();
   $resultado = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -34,6 +34,14 @@ if ($chartClass->tipo == 'BOX') {
     array_push($data, $registro->DATA);
   }
   $chartAtu = new Chart($chartClass->nome, $chartClass->descricao, $chartClass->tipo, $labels, $data, $chartClass->cor, $chartClass->tempo_refresh);
+  $htmlAtu = $chartAtu->render();
+}
+else if($chartClass->tipo == 'table'){
+  $stmt = $dbConn->prepare($chartClass->query);
+  $stmt->execute();
+  $resultado = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+  $chartAtu = new Table($chartClass->cor, $resultado, $chartClass->descricao, $chartClass->nome, $chartClass->tempo_refresh);
   $htmlAtu = $chartAtu->render();
 }
 

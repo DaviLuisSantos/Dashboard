@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     // Redireciona de volta para a página de configuração
-    echo '<script>window.location.href = "configuracao_dash.php";</script>';
+    echo '<script>window.location.href = "starter.php";</script>';
     exit();
 } else {
     // Se o formulário não foi enviado, redirecione para a página de configuração

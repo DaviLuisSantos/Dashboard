@@ -1,5 +1,7 @@
 <?php
 include '../z/config.php';
+session_start();
+$idoperador= $_SESSION['id_admin'] ;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -13,8 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $query = $_POST['query'];
 
     // Insere o novo gráfico na tabela
-    $query2 = "INSERT INTO PF_QUERY ( NOME, DESCRICAO, COR, ORDEM_EXIB, ID_MOD_DASHBOARD, TEMPO_REFRESH, SQL_QUERY) 
-VALUES ( :NOME, :DESCRICAO, :COR, :ORDEM_EXIB, :ID_MOD_DASHBOARD, :TEMPO_REFRESH, :SQL_QUERY)";
+    $query2 = "INSERT INTO PF_QUERY ( NOME, DESCRICAO, COR, ORDEM_EXIB, ID_MOD_DASHBOARD, TEMPO_REFRESH, SQL_QUERY,IDOPERADOR) 
+VALUES ( :NOME, :DESCRICAO, :COR, :ORDEM_EXIB, :ID_MOD_DASHBOARD, :TEMPO_REFRESH, :SQL_QUERY,:IDOPERADOR)";
     $stmt2 = $dbConn->prepare($query2);
     if ($stmt2 === false) {
         $error = $dbConn->errorInfo();
@@ -30,6 +32,7 @@ VALUES ( :NOME, :DESCRICAO, :COR, :ORDEM_EXIB, :ID_MOD_DASHBOARD, :TEMPO_REFRESH
     $stmt2->bindParam(':ID_MOD_DASHBOARD', $type);
     $stmt2->bindParam(':TEMPO_REFRESH', $tempo_refresh);
     $stmt2->bindParam(':SQL_QUERY', $query);
+    $stmt2->bindParam(':IDOPERADOR',$idoperador);
     $success = $stmt2->execute();
 
 
@@ -45,7 +48,7 @@ VALUES ( :NOME, :DESCRICAO, :COR, :ORDEM_EXIB, :ID_MOD_DASHBOARD, :TEMPO_REFRESH
 
 
     // Redireciona de volta para a página de configuração
-    echo '<script>window.location.href = "configuracao_dash.php";</script>';
+    echo '<script>window.location.href = "starter.php";</script>';
     exit();
 } else {
     // Se o formulário não foi enviado, redirecione para a página de configuração
